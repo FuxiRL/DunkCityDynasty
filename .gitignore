@@ -1,0 +1,9 @@
+### Python template
+__pycache__/
+
+rlsdk_logs/
+others/
+game_package_opensource
+train_tools
+ray_results
+.vscode

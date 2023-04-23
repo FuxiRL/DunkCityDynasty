@@ -1,0 +1,27 @@
+- shoot
+  - goal_in 
+  - enemy_shoot
+  - opposing_player_shoot
+  - ally_shoot
+  - me_shoot
+  - assist
+  - shoot_type_two
+  - shoot_type_three
+- steal
+  - steal
+  - steal_success
+  - stolen
+  - stolen_success
+- block
+  - block
+  - block_success
+  - blocked
+  - blocked_success
+- pickup
+  - pickup
+  - pickup_success
+- rebound
+  - rebound
+  - rebound_success
+- screen
+  - collide
