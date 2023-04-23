@@ -77,7 +77,6 @@ config = {
     }
 
 env = GymEnv(config)
-agent = RandomAgent()
 
 states, infos = env.reset()
 while True:
