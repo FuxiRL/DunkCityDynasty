@@ -1,7 +1,7 @@
 torch==1.11.0
 numpy==1.22.4
-ray==1.13.0
-ray[rllib]==1.13.0
+ray==2.3.0
+ray[rllib]==2.3.0
 docker==5.0.3
 msgpack==1.0.5
 gym==0.19.0
@@ -10,4 +10,4 @@ opencv-python==4.5.5.64
 grpcio==1.54.0 
 grpcio-tools==1.54.0 
 protobuf==4.22.3
-gymnasium==0.28.1
+gymnasium==0.26.3
