@@ -10,6 +10,7 @@ This repository contains an RL environment based on a commercial online basketba
 
 - [Overview](#overview)
 - [QuickStart](#quickStart)
+- [QA](#QA)
 - [Appendix](#appendix)
 
 ## Overview
@@ -42,7 +43,7 @@ git clone xxx.git
 Then, to run the Dunk City Dynasty client, wine and several components are needed. We can install wine via the `install.sh` or using `docker`.
 
 ```sh
-# install components in Ubuntu system
+# (Only for Ubuntu System) install components
 ./install_deps.sh
 
 # install components via docker
@@ -62,11 +63,13 @@ pip install -r requirements.txt
 
 After installing the corresponding components, we can run the Dunk City Dynasty Env with the following python code.
 
+- `Alt+Enter`: game screen scaling.
+
 ```python
 config = {
     'id': 1,
     'env_setting': 'win',
-    'client_path': 'xxxxxxx',
+    'client_path': 'path of game client',
     'rl_server_ip': '127.0.0.1',
     'rl_server_port': 6666,
     'game_server_ip': 'xxxxxxx',
@@ -99,6 +102,13 @@ python get_start.py
 ```sh
 xxx
 ```
+
+## QA
+
+#### The game crashes when executing the `get_start.py` file.
+
+If the game crashes when executing the get_start.py file for the first time, you can try executing it again.
+
 
 ## Appendix
 
