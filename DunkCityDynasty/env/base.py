@@ -27,6 +27,12 @@ class BaseEnv():
         self.rl_server_port = config['rl_server_port']
         self.game_server_ip = config['game_server_ip']
         self.game_server_port = config['game_server_port']
+        if self.env_setting == 'linux':
+            if 'xvfb_display' not in config:
+                self.xvfb_display = 5
+            else:
+                self.xvfb_display = config['xvfb_display']
+
         if self.env_setting =='multi_machine':
             self.machine_server_ip = config['machine_server_ip']
             self.machine_server_port = config['machine_server_port']
