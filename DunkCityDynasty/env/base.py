@@ -27,7 +27,7 @@ class BaseEnv():
         self.rl_server_port = config['rl_server_port']
         self.game_server_ip = config['game_server_ip']
         self.game_server_port = config['game_server_port']
-        
+
         if self.env_setting == 'linux':
             if 'xvfb_display' not in config:
                 self.xvfb_display = 5
@@ -72,6 +72,13 @@ class BaseEnv():
         # get state        
         states = self._wait_for_state(min_player=3)
 
+        # If the game does not respond for a long time, restart the game
+        while states is None:
+            self._close_client()
+            time.sleep(1)
+            self.game_pid = self._start_client()
+            states = self._wait_for_state(min_player=3)
+
         # hyperparameter reset
         self.step_cnt = 0
         self.last_step_time = time.time()
@@ -90,6 +97,9 @@ class BaseEnv():
         self._set_action(action_dict)
         # 2. get new state from client 
         states = self._wait_for_state(min_player=3)
+        if states is None:
+            raise Exception("Game client did not respond")
+
         # 3. get game done info
         done = self._get_done(states)
 
@@ -230,10 +240,11 @@ class BaseEnv():
         self.tcp_server.shutdown()
         self.tcp_server.server_close()
 
-    def _wait_for_state(self, min_player=0):
+    def _wait_for_state(self, min_player=0, max_wait_count=60):
         """wait the fixed time to accept env state
         """
         states = {}
+        wait_count = 0
         while True:
             for i in range(self.total_agent):
                 if self.stream_data[i]['state']:
@@ -244,6 +255,11 @@ class BaseEnv():
 
             # sleep
             sleep(0.001)
+
+            # timeout detection.
+            wait_count += 0.001
+            if wait_count > max_wait_count:
+                return None
 
     def _set_action(self, action_dict):
         """set action to tcp server
