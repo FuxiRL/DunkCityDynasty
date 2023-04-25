@@ -19,20 +19,21 @@ Dunk City Dynasty is a brand new multiplayer online basketball game developed by
 
 ### Game Challenge
 
-- **Asynchronous Decision-Making:**
-- **Policy Generalization:**
+- **Real-time Environment**
+- **Asynchronous Decision-Making**
+- **Policy Generalization**
 
 ### Observation Space
 
-reference to [here](./assets/state.md)
+Same as traditional multi-agent environments, the observation space of the Dunk City Dynasty Environment consists of `global_state`, `self_state`,` ally state`, `enemy state`, and `legal action`. The `ally state` and `enemy state` contain the state features of each teammate and opponent, respectively. Details can be seen in [here](./assets/state.md).
 
 ### Action Space
 
-
-
-reference to [here](./assets/role_action.xlsx)
+In Dunk City Dynasty Environment, each role have various executed actions while sharing the same `movement actions` (Up, Up Right, Right, Down Right, Down, Down Left, Left, Up Left), `Noop action`, `Cancel action` and `Pass Ball action`. In addition to shared actions, each character also has their own `unique basic skills` and `special skills`. Totally, he action space is a 52-dimensional discrete action space.. Specific action space can be found in [the related documentation](./assets/role_action.xlsx).
 
 ### Game Event
+
+Dunk City Dynasty Environment event contains `shoot event`, `steal event`, `block event`, `pickup event`, `rebound event` and `screen event`. Details can be seen in [here](./assets/event.md).
 
 ## QuickStart
 
