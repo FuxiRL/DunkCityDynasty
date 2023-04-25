@@ -4,7 +4,7 @@
 
 This repository contains an RL environment based on a commercial online basketball game named [Dunk City Dynasty](https://www.dunkcitymobile.com/). It was created by the [Netease Leihuo Technology](https://leihuo.163.com/) and the [Netease FuXi AI lab](https://fuxi.163.com/) for research purposes.
 
-![](./assets/game_pic.jpg)
+<img src="./assets/game_pic.jpg" style="zoom:67%;" />
 
 ## Content
 
@@ -28,7 +28,11 @@ reference to [here](./assets/state.md)
 
 ### Action Space
 
-reference to [here](./assets/action.md)
+
+
+reference to [here](./assets/role_action.xlsx)
+
+### Game Event
 
 ## QuickStart
 
@@ -68,15 +72,15 @@ After installing the corresponding components, we can run the Dunk City Dynasty 
 ```python
 config = {
     'id': 1,
-    'env_setting': 'win',
-    'client_path': 'path of game client',
-    'rl_server_ip': '127.0.0.1',
-    'rl_server_port': 6666,
-    'game_server_ip': 'xxxxxxx',
-    'game_server_port': 6667,
-    'machine_server_ip': '',
-    'machine_server_port': 0,
-    'episode_horizon': 100000
+    'env_setting': 'win', # or 'linux' for ubuntu system
+    'client_path': 'path-of-game-client',
+    'rl_server_ip': '127.0.0.1', # ip of the rl server
+    'rl_server_port': 6666,  # port of the rl server
+    'game_server_ip': 'xxxxxxx', # ip of the game server (we will provide a public IP address and port later)
+    'game_server_port': 6667, # port of the game server (we will provide a public IP address and port later)
+    'machine_server_ip': '', # ip of remote machineserver (for multi machine setting)
+    'machine_server_port': 0, # port of remote machineserver (for multi machine setting)
+    'episode_horizon': 100000 # max game steps
     }
 
 env = GymEnv(config)
@@ -105,9 +109,13 @@ xxx
 
 ## QA
 
-#### The game crashes when executing the `get_start.py` file.
+##### The game crashes when executing the `get_start.py` file.
 
 If the game crashes when executing the get_start.py file for the first time, you can try executing it again.
+
+##### When running get_start.py on an Ubuntu system, there is an issue with Wine getting stuck.
+
+Try quitting get_start.py and running the get_start.py file again. 
 
 
 ## Appendix
