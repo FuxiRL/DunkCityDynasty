@@ -5,7 +5,7 @@ Author: JiangJi
 Email: johnjim0816@gmail.com
 Date: 2023-04-24 17:13:35
 LastEditor: JiangJi
-LastEditTime: 2023-04-25 19:47:57
+LastEditTime: 2023-04-25 20:21:29
 Discription: 
 '''
 #!/usr/bin/env python
@@ -60,8 +60,12 @@ class MyModel(TorchModelV2,nn.Module):
         # Compute the unmasked logits.
         logits, _ = self.internal_model({"obs": states})
         # Convert action_mask into a [0.0 || -inf]-type mask.
-        inf_mask = torch.clamp(torch.log(action_mask), min=FLOAT_MIN)
-        masked_logits = logits + inf_mask
+        # inf_mask = torch.clamp(torch.log(action_mask), min=FLOAT_MIN)
+
+        # masked_logits = logits + inf_mask
+        # Apply the mask to the logits.
+        large_compatible_negative = torch.finfo(logits.dtype).min if logits.dtype == torch.float32 else 1e-9
+        masked_logits = logits * action_mask + (1 - action_mask) * large_compatible_negative
         return masked_logits, state
 
 
@@ -109,6 +113,9 @@ if __name__ == '__main__':
                 "shared_policy": PolicySpec(observation_space=obs_space,action_space=act_space,config={}),
             },
             policy_mapping_fn= lambda agent_id, episode, worker, **kwargs: "shared_policy",
+        )
+        .debugging(
+        log_level="INFO",
         )
         # .offline_data(
         #     input_=_input
