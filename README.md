@@ -105,7 +105,7 @@ python get_start.py
 ### An easy training demo
 
 ```sh
-xxx
+python train_ppo.py
 ```
 
 ## QA
