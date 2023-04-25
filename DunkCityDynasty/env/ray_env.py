@@ -1,18 +1,10 @@
-#!/usr/bin/env python
-# coding=utf-8
-'''
-Author: JiangJi
-Email: johnjim0816@gmail.com
-Date: 2023-04-24 17:14:50
-LastEditor: JiangJi
-LastEditTime: 2023-04-25 01:05:11
-Discription: 
-'''
-import gymnasium as gym
 import numpy as np
+import gymnasium as gym
 from ray.rllib.env import MultiAgentEnv
 
 from DunkCityDynasty.env.base import BaseEnv
+from DunkCityDynasty.wrapper.gym_wrapper import SimpleGymWrapper
+
 
 class RayEnv(MultiAgentEnv):
     def __init__(self, config):
@@ -25,94 +17,33 @@ class RayEnv(MultiAgentEnv):
             print("config.worker_index not found")
             pass
 
-        self.get_spaces()
-    def get_spaces(self):
-        self.observation_space = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(226,), dtype=np.float32) # 15 + 29 + 26*5 + 52
-        self.action_space = gym.spaces.Discrete(52)
+        self.env_wrapper = SimpleGymWrapper({})
+        self.observation_space = self.env_wrapper.observation_space
+        self.action_space = self.env_wrapper.action_space
+
     def reset(self):
-        raw_states = self.external_env.reset()
-        states = self.get_states(raw_states)
-        return states, {}
-    
-    def step(self, action_dict):
+        # wrapper reset
+        self.env_wrapper.reset()
 
         # env reset
-        raw_states, dones = self.external_env.step(action_dict)
+        raw_states = self.external_env.reset()
+
+        # env reset
+        states = self.env_wrapper.state_wrapper(raw_states)
+        infos = self.env_wrapper.info_wrapper(raw_states)
+
+        return states, infos
+    
+    def step(self, action_dict):
+        # env reset
+        raw_states, done = self.external_env.step(action_dict)
 
         # feature embedding
-        states = self.get_states(raw_states)
-        rewards = self.get_rewards(raw_states)
-        infos = self.get_infos(raw_states)
-        dones = {"__all__": dones}
-        truncated = {"__all__": dones}
+        states = self.env_wrapper.state_wrapper(raw_states)
+        rewards = self.env_wrapper.reward_wrapper(raw_states)
+        infos = self.env_wrapper.info_wrapper(raw_states)
+        dones = {"__all__": done}
+        truncated = {"__all__": done}
 
         return states, rewards, dones, truncated, infos
-    def get_states(self,raw_states):
-        states = {}
-        for key in raw_states.keys():
-            each_states = raw_states[key][1]
-            global_state = np.array(list(each_states['global_state'].values())) # 15
-            self_state = np.array(list(each_states['self_state'].values())) # 29
-            ally0_state = np.array(list(each_states['ally_0_state'].values()))
-            ally1_state = np.array(list(each_states['ally_1_state'].values()))
-            enemy0_state = np.array(list(each_states['enemy_0_state'].values())) # 26
-            enemy1_state = np.array(list(each_states['enemy_1_state'].values()))
-            enemy2_state = np.array(list(each_states['enemy_2_state'].values()))
-           
-            action_mask = np.array(raw_states[key][-1])
-            observations = np.concatenate((global_state, self_state, ally0_state, ally1_state, enemy0_state, enemy1_state, enemy2_state, action_mask), axis=0)
-            states[key] = observations
-        return states
-    def calc_each_reward(self, state):
-        reward = 0
-        event = state[0]
-        event_keys = list(event.keys())
-        if len(event_keys) == 0:
-            return reward
-        if 'shoot' in event_keys:
-            shoot_event = event['shoot']
-            score_avg = shoot_event['shoot_type_two'] * 2 + shoot_event['shoot_type_three'] * 3
-            score_avg *= (shoot_event['goal_in']+2)
-            assist_reward = 0.5* shoot_event['assist'] * score_avg
-            reward += assist_reward
-            shoot_reward = (1 * shoot_event['me_shoot'] + 0.5 * shoot_event['ally_shoot'] - 1 * shoot_event['enemy_shoot'] - 0.5* shoot_event['opposing_player_shoot']) * score_avg
-            reward += shoot_reward
-        if 'steal' in event_keys:
-            steal_event = event['steal']
-            steal_reward = 0.2* steal_event['steal'] + 1* steal_event['steal_success'] - 0.5* steal_event['stolen'] - 1* steal_event['stolen_success']
-            reward += steal_reward
-        if 'block' in event_keys:
-            block_event = event['block']
-            block_reward = 0.5* block_event['block'] + 1* block_event['block_success'] - 0.5* block_event['blocked'] - 1* block_event['blocked_success']
-            reward += block_reward
-        if 'rebound' in event_keys:
-            rebound_event = event['rebound']
-            rebound_reward = 0.2* rebound_event['rebound'] + 0.5* rebound_event['rebound_success']
-            reward += rebound_reward
-        if 'pickup' in event_keys:
-            pickup_event = event['pickup']
-            pickup_reward = 1* pickup_event['pickup'] + 2* pickup_event['pickup_success']
-            reward += pickup_reward
-        global_state = state[1]['global_state']
-        ball_clear = global_state['ball_clear'] # 球是否出三分
-        self_state = state[1]['self_state']
-        is_team_own_ball = self_state['is_team_own_ball'] # 球权
-        attack_remain_time = global_state['attack_remain_time'] # 进攻剩余时间
-        reward -= (1-ball_clear) * 0.5
-        reward -= (180 - attack_remain_time) * 0.01 * is_team_own_ball
-        return reward
-
-    def get_rewards(self, raw_states):
-        rewards = {}
-        for key in raw_states.keys():
-            state = raw_states[key]
-            reward = self.calc_each_reward(state)
-            rewards[key] = reward
-
-        return rewards
     
-    def get_infos(self, raw_states):
-        infos = {}
-        for key in raw_states.keys():
-            infos[key] = {}
-        return infos

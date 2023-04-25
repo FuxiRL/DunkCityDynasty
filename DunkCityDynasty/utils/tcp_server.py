@@ -1,5 +1,4 @@
 import time
-import traceback
 import threading
 import socketserver
 
@@ -78,7 +77,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
                             self.stream_data[stream_idx]['action'] = None
 
         except:
-            traceback.print_exc()
+            pass
         finally:
             print("stop tcp server: " + threading.currentThread().name)
 

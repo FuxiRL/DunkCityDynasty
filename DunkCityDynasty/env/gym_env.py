@@ -4,9 +4,10 @@ from DunkCityDynasty.env.base import BaseEnv
 from DunkCityDynasty.wrapper.gym_wrapper import SimpleGymWrapper
 
 
-class GymEnv(BaseEnv, gym.Env):
+class GymEnv(gym.Env):
     def __init__(self, config):
-        BaseEnv.__init__(self, config)
+        self.config = config
+        self.external_env = BaseEnv(config)
 
         self.env_wrapper = SimpleGymWrapper({})
         self.observation_space = self.env_wrapper.observation_space
@@ -17,22 +18,22 @@ class GymEnv(BaseEnv, gym.Env):
         self.env_wrapper.reset()
 
         # env reset
-        origin_states = BaseEnv.reset(self)
+        raw_states = self.external_env.reset()
 
         # feature embedding
-        states = self.env_wrapper.state_wrapper(origin_states)
-        infos = self.env_wrapper.info_wrapper(origin_states)
+        states = self.env_wrapper.state_wrapper(raw_states)
+        infos = self.env_wrapper.info_wrapper(raw_states)
 
         return states, infos
         
     def step(self, action_dict):
         # env reset
-        origin_states, done = BaseEnv.step(self, action_dict)
+        raw_states, done = self.external_env.step(action_dict)
 
         # feature embedding
-        states = self.env_wrapper.state_wrapper(origin_states)
-        rewards = self.env_wrapper.reward_wrapper(origin_states)
-        infos = self.env_wrapper.info_wrapper(origin_states)
+        states = self.env_wrapper.state_wrapper(raw_states)
+        rewards = self.env_wrapper.reward_wrapper(raw_states)
+        infos = self.env_wrapper.info_wrapper(raw_states)
         dones = {"__all__": done}
         truncated = {"__all__": done}
 

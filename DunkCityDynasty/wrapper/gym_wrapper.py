@@ -29,6 +29,7 @@ class SimpleGymWrapper():
             
             observations = np.concatenate((global_state, self_state, ally0_state, ally1_state, enemy0_state, enemy1_state, enemy2_state, action_mask), axis=0)
             new_states[key] = observations
+
         return new_states
 
     def calc_each_reward(self, state):
@@ -61,6 +62,7 @@ class SimpleGymWrapper():
             pickup_event = event['pickup']
             pickup_reward = 1* pickup_event['pickup'] + 2* pickup_event['pickup_success']
             reward += pickup_reward
+
         global_state = state[1]['global_state']
         ball_clear = global_state['ball_clear'] # 球是否出三分
         self_state = state[1]['self_state']
@@ -68,6 +70,7 @@ class SimpleGymWrapper():
         attack_remain_time = global_state['attack_remain_time'] # 进攻剩余时间
         reward -= (1-ball_clear) * 0.5
         reward -= (180 - attack_remain_time) * 0.01 * is_team_own_ball
+        
         return reward
 
     def reward_wrapper(self, states):
