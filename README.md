@@ -102,6 +102,20 @@ or, directly run the `get_start.py` file
 python get_start.py
 ```
 
+Currently, Dunk City Dynasty Environment supports `win` and `linux` system. In Linux systems, environments are launched through Wine. 
+
+Besides, Dunk City Dynasty Environment supports multi-machine mode. We use Linux system for training and Windows system for environment rollout as an example.
+1. configure relevant parameters in `multi_machine_server.py`:
+    - `CLIENT_PATH`: game client path 
+    - `GAME_SERVER_IP`: game server ip
+    - `GAME_SERVER_PORT`: game server port 
+    - `MACHINE_SERVER_PORT`: machine server port
+2. run `python multi_machine_server.py` for start the multi-machine server in Windows system.
+3. configure relevant parameters in `get_start.py`:    
+    - `machine_server_ip`: ip of the machine server
+    - `machine_server_port`: port of the machine server
+4. finally, run `python get_start.py` for start the environment rollout in Linux system.
+
 ### An easy training demo
 
 ```sh
