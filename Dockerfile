@@ -24,8 +24,15 @@ RUN python3.8 /tmp/get-pip.py
 RUN pip3.8 install numpy==1.22.4
 RUN pip3.8 install tensorflow==2.9.1
 RUN pip3.8 install torch==1.11.0
-RUN pip3.8 install ray==1.8.0
-RUN pip3.8 install ray[rllib]==1.8.0
+RUN pip3.8 install ray==2.3.0
+RUN pip3.8 install ray[rllib]==2.3.0
 RUN pip3.8 install docker==5.0.3
 RUN pip3.8 install pypng==0.0.21
 RUN pip3.8 install imageio==2.19.3
+RUN pip3.8 install protobuf==4.22.3
+RUN pip3.8 install gymnasium==0.26.3
+RUN pip3.8 install opencv-python==4.5.5.64
+RUN pip3.8 install grpcio==1.54.0 
+RUN pip3.8 install grpcio-tools==1.54.0 
+
+
