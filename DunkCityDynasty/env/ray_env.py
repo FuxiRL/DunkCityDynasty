@@ -21,7 +21,7 @@ class RayEnv(MultiAgentEnv):
         self.observation_space = self.env_wrapper.observation_space
         self.action_space = self.env_wrapper.action_space
 
-    def reset(self):
+    def reset(self, **kwargs):
         # wrapper reset
         self.env_wrapper.reset()
 

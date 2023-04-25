@@ -5,7 +5,17 @@ Author: JiangJi
 Email: johnjim0816@gmail.com
 Date: 2023-04-24 17:13:35
 LastEditor: JiangJi
-LastEditTime: 2023-04-25 01:05:37
+LastEditTime: 2023-04-25 19:47:57
+Discription: 
+'''
+#!/usr/bin/env python
+# coding=utf-8
+'''
+Author: JiangJi
+Email: johnjim0816@gmail.com
+Date: 2023-04-24 17:13:35
+LastEditor: JiangJi
+LastEditTime: 2023-04-25 19:33:55
 Discription: 
 '''
 import torch
@@ -21,6 +31,7 @@ from ray.rllib.models.torch.fcnet import FullyConnectedNetwork as TorchFC
 from ray.rllib.policy.policy import PolicySpec
 
 from DunkCityDynasty.env.ray_env import RayEnv
+from DunkCityDynasty.wrapper.gym_wrapper import SimpleGymWrapper
 
 
 class MyModel(TorchModelV2,nn.Module):
@@ -71,7 +82,9 @@ if __name__ == '__main__':
         'game_server_port': 18000,
         'episode_horizon': 100000,
     }
-    env = RayEnv(env_config)
+    wrapper = SimpleGymWrapper({})
+    obs_space = wrapper.observation_space
+    act_space = wrapper.action_space
     config = (
         PPOConfig()
         .framework("torch")
@@ -83,14 +96,17 @@ if __name__ == '__main__':
         .environment(
         env = "my_env",
         env_config = env_config,
-        observation_space = env.observation_space,
-        action_space = env.action_space,
+        observation_space = obs_space,
+        action_space = act_space,
         )
-        .training(train_batch_size=256)
+        .training(
+        train_batch_size=256,
+        lr=0.0001,
+        )
         .multi_agent(
             policies = {
-                "default_policy": PolicySpec(observation_space=env.observation_space,action_space=env.action_space,config={}),
-                "shared_policy": PolicySpec(observation_space=env.observation_space,action_space=env.action_space,config={}),
+                "default_policy": PolicySpec(observation_space=obs_space,action_space=act_space,config={}),
+                "shared_policy": PolicySpec(observation_space=obs_space,action_space=act_space,config={}),
             },
             policy_mapping_fn= lambda agent_id, episode, worker, **kwargs: "shared_policy",
         )
@@ -99,7 +115,7 @@ if __name__ == '__main__':
         # )   
     )
     algo = config.build()
-    # algo.train()
+    
 
     tuner = tune.Tuner(
         "PPO",
@@ -117,6 +133,10 @@ if __name__ == '__main__':
     # Get the best checkpoint corresponding to the best result.
     best_checkpoint = best_result.checkpoint
 
+    
+    # test for compute_single_action
+
+    # env = RayEnv(env_config)
     # states , _ = env.reset()
     # for i in range(1000):
     #     action_dict = {}
