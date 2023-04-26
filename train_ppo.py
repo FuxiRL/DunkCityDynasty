@@ -5,7 +5,7 @@ Author: JiangJi
 Email: johnjim0816@gmail.com
 Date: 2023-04-24 17:13:35
 LastEditor: JiangJi
-LastEditTime: 2023-04-25 20:21:29
+LastEditTime: 2023-04-26 17:13:38
 Discription: 
 '''
 #!/usr/bin/env python
@@ -61,7 +61,7 @@ class MyModel(TorchModelV2,nn.Module):
         logits, _ = self.internal_model({"obs": states})
         # Convert action_mask into a [0.0 || -inf]-type mask.
         # inf_mask = torch.clamp(torch.log(action_mask), min=FLOAT_MIN)
-
+        # print("action_mask: ", action_mask)
         # masked_logits = logits + inf_mask
         # Apply the mask to the logits.
         large_compatible_negative = torch.finfo(logits.dtype).min if logits.dtype == torch.float32 else 1e-9
@@ -104,6 +104,12 @@ if __name__ == '__main__':
         action_space = act_space,
         )
         .training(
+        model = {
+            "custom_model": "my_model",
+            "custom_model_config": {
+                "fcnet_hiddens": [256, 256],
+            },
+        },
         train_batch_size=256,
         lr=0.0001,
         )
@@ -116,6 +122,7 @@ if __name__ == '__main__':
         )
         .debugging(
         log_level="INFO",
+        
         )
         # .offline_data(
         #     input_=_input
