@@ -26,7 +26,6 @@ class SimpleGymWrapper():
             enemy2_state = np.array(list(each_states['enemy_2_state'].values()))
            
             action_mask = np.array(states[key][-1])
-            
             observations = np.concatenate((global_state, self_state, ally0_state, ally1_state, enemy0_state, enemy1_state, enemy2_state, action_mask), axis=0)
             new_states[key] = observations
 

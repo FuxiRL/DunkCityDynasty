@@ -6,8 +6,8 @@ import DunkCityDynasty.env.multi_machine.machine_comm_pb2 as machine_comm_pb2
 import DunkCityDynasty.env.multi_machine.machine_comm_pb2_grpc as machine_comm_pb2_grpc
 
 
-CLIENT_PATH = r'E:\Code\L33_Code\game_package_opensource_v3_reward_event' # client path
-GAME_SERVER_IP = '42.186.153.157' # game server ip
+CLIENT_PATH = r'path-to-game-client' # client path
+GAME_SERVER_IP = '127.0.0.1' # game server ip
 GAME_SERVER_PORT = 18000 # game server port
 MACHINE_SERVER_PORT = 6667 # machine server port
 

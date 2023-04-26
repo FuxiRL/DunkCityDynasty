@@ -1,5 +1,7 @@
 import time
 import random
+import numpy as np
+
 from DunkCityDynasty.env.gym_env import GymEnv
 
 
@@ -8,7 +10,8 @@ class RandomAgent():
         pass
 
     def act(self, states):
-        return {key: random.randint(1, 20) for key in states}
+        action_masks = {key: np.argwhere(states[key][-52:] == 1.).flatten() for key in states}
+        return {key: random.choices(action_masks[key].tolist(), k=1)[0] for key in action_masks}
 
 
 def main():
@@ -17,15 +20,30 @@ def main():
     config = {
         'id': 1,
         'env_setting': 'win',
-        'client_path': r'E:\Code\L33_Code\game_package_opensource_v3_reward_event',
+        'client_path': 'path-to-game-client',
         'rl_server_ip': '127.0.0.1',
         'rl_server_port': 42636,
-        'game_server_ip': '42.186.153.157',
+        'game_server_ip': '127.0.0.1',
         'game_server_port': 18000,
         'machine_server_ip': '',
         'machine_server_port': 0,
         'episode_horizon': 100000
     }
+
+    # --- linux env
+    # config = {
+    #     'id': 1,
+    #     'env_setting': 'linux',
+    #     'client_path': 'path-to-game-client',
+    #     'rl_server_ip': '127.0.0.1',
+    #     'rl_server_port': 42636,
+    #     'game_server_ip': '127.0.0.1',
+    #     'game_server_port': 18000,
+    #     'machine_server_ip': '',
+    #     'machine_server_port': 0,
+    #     'episode_horizon': 100000
+    # }
+
     # # --- multi_machine
     # config = {
     #     'id': 1,
@@ -33,7 +51,7 @@ def main():
     #     'client_path': '',
     #     'rl_server_ip': '10.219.204.81',
     #     'rl_server_port': 42636,
-    #     'game_server_ip': '42.186.153.157',
+    #     'game_server_ip': '127.0.0.1',
     #     'game_server_port': 18000,
     #     'machine_server_ip': '10.219.204.76',
     #     'machine_server_port': 6667,

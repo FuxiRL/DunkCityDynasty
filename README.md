@@ -1,10 +1,10 @@
 ![](./assets/Fuxi_logo.png)
 
-# Dunk City Dynasty: Asynchronous Multi-Agent Basketball Environment
+# Dunk City Dynasty: Multi-Agent Basketball Environment
 
 This repository contains an RL environment based on a commercial online basketball game named [Dunk City Dynasty](https://www.dunkcitymobile.com/). It was created by the [Netease Leihuo Technology](https://leihuo.163.com/) and the [Netease FuXi AI lab](https://fuxi.163.com/) for research purposes.
 
-<img src="./assets/game_pic.jpg" style="zoom:67%;" />
+<img src="./assets/game_pic.jpg" style="zoom:60%;" />
 
 ## Content
 
@@ -15,73 +15,73 @@ This repository contains an RL environment based on a commercial online basketba
 
 ## Overview
 
-Dunk City Dynasty is a brand new multiplayer online basketball game developed by NetEase Games. In the game, players can choose their favorite characters and participate in 3v3 street basketball matches. The player-controlled characters in the game are mostly star players from the National Basketball Association (NBA) in the United States, such as LeBron James, Kevin Durant, Stephen Curry, and so on, each with their own characteristics and exclusive skills. Players need to use their skills and strategies to win matches and improve their level and ranking. For more information about the game, please refer to the official website at https://www.dunkcitymobile.com/.
+| ![](./assets/dcd-3p-shot.png) | ![](./assets/dcd-block.png) |
+| ----------------------------- | --------------------------- |
 
-### Game Challenge
+Dunk City Dynasty is an exciting new multiplayer online basketball game developed by NetEase Games. In this game, players can select their favorite characters to compete in thrilling 3v3 street basketball matches. The game features an impressive roster of player-controlled characters, including popular stars from the National Basketball Association (NBA) like LeBron James, Kevin Durant, Stephen Curry, and many more, each with unique abilities and skills. To succeed in matches and climb the rankings, players must utilize their skills and strategies. For additional information about the game, please visit the official website at https://www.dunkcitymobile.com/.
 
-- **Real-time Environment**
-- **Asynchronous Decision-Making**
-- **Policy Generalization**
+### Reinforcement Learning Wrapper
 
-### Observation Space
+#### Observation Space
 
-Same as traditional multi-agent environments, the observation space of the Dunk City Dynasty Environment consists of `global_state`, `self_state`,` ally state`, `enemy state`, and `legal action`. The `ally state` and `enemy state` contain the state features of each teammate and opponent, respectively. Details can be seen in [here](./assets/state.md).
+Similar to traditional multi-agent environments, the Dunk City Dynasty Environment's observation space is comprised of several key elements, including `global_state`, `self_state`, `ally state`, `enemy state`, and `legal action`. Within the `ally state` and `enemy state` components, players can access the unique state features of both their teammates and opponents, respectively. For more in-depth information regarding these features, please refer to [here](https://gpt-api-demo.hz.netease.com/assets/state.md).
 
-### Action Space
+#### Action Space
 
-In Dunk City Dynasty Environment, each role have various executed actions while sharing the same `movement actions` (Up, Up Right, Right, Down Right, Down, Down Left, Left, Up Left), `Noop action`, `Cancel action` and `Pass Ball action`. In addition to shared actions, each character also has their own `unique basic skills` and `special skills`. Totally, he action space is a 52-dimensional discrete action space.. Specific action space can be found in [the related documentation](./assets/role_action.xlsx).
+Within the Dunk City Dynasty Environment, each role possesses a diverse range of executed actions, while simultaneously sharing several key `movement actions`, including Up, Up Right, Right, Down Right, Down, Down Left, Left, Up Left, as well as a `Noop action`, `Cancel action`, and `Pass Ball action`. In addition to these shared actions, each character also has their own `unique basic skills` and `special skills`. Overall, the action space within the game is a 52-dimensional discrete action space. For more detailed information regarding specific actions, please consult [the related documentation](https://gpt-api-demo.hz.netease.com/assets/role_action.xlsx).
 
-### Game Event
+#### Game Event
 
-Dunk City Dynasty Environment event contains `shoot event`, `steal event`, `block event`, `pickup event`, `rebound event` and `screen event`. Details can be seen in [here](./assets/event.md).
+The Dunk City Dynasty Environment event comprises several key components, including `shoot event`, `steal event`, `block event`, `pickup event`, `rebound event`, and `screen event`. For more information regarding these events, please consult [here](https://gpt-api-demo.hz.netease.com/assets/event.md).
 
 ## QuickStart
 
 ### Installation
 
-Everyone can install the Dunk City Dynasty Env via Github. First, download the repo via
+To install the Dunk City Dynasty Environment, simply follow these steps: 
 
-```sh
-git clone xxx.git
-```
+1. Download the repository using the following command:
 
-Then, to run the Dunk City Dynasty client, wine and several components are needed. We can install wine via the `install.sh` or using `docker`.
+   ```
+   git clone https://github.com/FuxiRL/DunkCityDynasty.git
+   ```
 
-```sh
-# (Only for Ubuntu System) install components
-./install_deps.sh
+2. For non-Windows system users, in order to run the Dunk City Dynasty client, you will need to install wine and several other required components. This can be done either by using the `install.sh` script or by utilizing `docker`. Here are the relevant commands:
 
-# install components via docker
-docker build -t dunk_city_dynasty_env:v1.0 .
-```
+   ```sh
+   # (Only for Ubuntu System) Install components
+   ./install_deps.sh
+   
+   # Install components via docker
+   docker build -t dunk_city_dynasty_env:v1.0 .
+   ```
 
-Finally, install the relevant python packages. (Currently, we only support python=3.8)
+3. Finally, install the relevant Python packages. (Please note that at present, we only support Python version 3.8.)
 
-```sh
-conda create -n dunk_city_dynasty python=3.8
-conda activate dunk_city_dynasty
-
-pip install -r requirements.txt
-```
+   ```sh
+   # need install anaconda first
+   conda create -n dunk_city_dynasty python=3.8
+   conda activate dunk_city_dynasty
+   
+   pip install -r requirements.txt
+   ```
 
 ### Get start
 
-After installing the corresponding components, we can run the Dunk City Dynasty Env with the following python code.
-
-- `Alt+Enter`: game screen scaling.
+After installing the corresponding components, we can run the Dunk City Dynasty Environment with the following python code.
 
 ```python
 config = {
     'id': 1,
-    'env_setting': 'win', # or 'linux' for ubuntu system
+    'env_setting': 'win',                   # or 'linux' for ubuntu system
     'client_path': 'path-of-game-client',
-    'rl_server_ip': '127.0.0.1', # ip of the rl server
-    'rl_server_port': 6666,  # port of the rl server
-    'game_server_ip': 'xxxxxxx', # ip of the game server (we will provide a public IP address and port later)
-    'game_server_port': 6667, # port of the game server (we will provide a public IP address and port later)
-    'machine_server_ip': '', # ip of remote machineserver (for multi machine setting)
-    'machine_server_port': 0, # port of remote machineserver (for multi machine setting)
-    'episode_horizon': 100000 # max game steps
+    'rl_server_ip': '127.0.0.1',            # ip of the rl server
+    'rl_server_port': 6666,                 # port of the rl server
+    'game_server_ip': 'xxxxxxx',            # ip of the game server (we will provide a public IP address and port later)
+    'game_server_port': 6667,               # port of the game server (we will provide a public IP address and port later)
+    'machine_server_ip': '',                # ip of remote machineserver (for multi machine setting)
+    'machine_server_port': 0,               # port of remote machineserver (for multi machine setting)
+    'episode_horizon': 100000               # max game steps
     }
 
 env = GymEnv(config)
@@ -102,21 +102,22 @@ or, directly run the `get_start.py` file
 python get_start.py
 ```
 
-Currently, Dunk City Dynasty Environment supports `win` and `linux` system. In Linux systems, environments are launched through Wine. 
+The Dunk City Dynasty Environment currently supports both Windows and Linux systems. On Linux systems, the environments can be launched through Wine. In addition, the Dunk City Dynasty Environment supports multi-machine mode, where Linux is used for training and Windows for environment rollout, for example. To use the multi-machine mode, follow these steps:
 
-Besides, Dunk City Dynasty Environment supports multi-machine mode. We use Linux system for training and Windows system for environment rollout as an example.
-1. configure relevant parameters in `multi_machine_server.py`:
-    - `CLIENT_PATH`: game client path 
-    - `GAME_SERVER_IP`: game server ip
-    - `GAME_SERVER_PORT`: game server port 
-    - `MACHINE_SERVER_PORT`: machine server port
-2. run `python multi_machine_server.py` for start the multi-machine server in Windows system.
-3. configure relevant parameters in `get_start.py`:    
-    - `machine_server_ip`: ip of the machine server
-    - `machine_server_port`: port of the machine server
-4. finally, run `python get_start.py` for start the environment rollout in Linux system.
+1. Configure the relevant parameters in `multi_machine_server.py`
+   - `CLIENT_PATH`: the path of the game client 
+   - `GAME_SERVER_IP`: the IP address of the game server
+   - `GAME_SERVER_PORT`: the port of the game server 
+   - `MACHINE_SERVER_PORT`: the port of the machine server
+2. Run `python multi_machine_server.py` to start the multi-machine server in Windows.
+3. Configure the relevant parameters in `get_start.py`
+   - `machine_server_ip`: the IP address of the machine server
+   - `machine_server_port`: the port of the machine server
+4. Finally, run `python get_start.py` to start the environment rollout in Linux.
 
 ### An easy training demo
+
+Currently, we provide a simple training code based on the [rllib framework](https://www.ray.io/rllib). You can try to train the agent by running the following code.
 
 ```sh
 python train_ppo.py
@@ -132,9 +133,16 @@ If the game crashes when executing the get_start.py file for the first time, you
 
 Try quitting get_start.py and running the get_start.py file again. 
 
+##### Game setting
+
+- `Alt+Enter`: game screen scaling.
+- Turn off game rendering: set `disableGameRendering=1` in `./Lx33_Data/boot.config` 
+
 
 ## Appendix
 
-- Client Path: 
-- Human Data:
+Everyone can get the game client and human data from the following link.
+
+- Client Path: https://thunderfile.leihuo.netease.com/smart-link/5e57f6e3-dfb2-4b6f-8dcb-93cab88f3f60/
+- Human Data: https://thunderfile.leihuo.netease.com/smart-link/35a72d9a-8836-45dc-8dc6-d7cfc0771fb3/
 
