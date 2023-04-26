@@ -135,7 +135,7 @@ Try quitting get_start.py and running the get_start.py file again.
 
 ##### Game setting
 
-- `Alt+Enter`: game screen scaling.
+- Game screen scaling: `Alt+Enter`.
 - Turn off game rendering: set `disableGameRendering=1` in `./Lx33_Data/boot.config` 
 
 
