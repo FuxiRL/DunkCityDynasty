@@ -127,11 +127,11 @@ python train_ppo.py
 
 ##### The game crashes when executing the `get_start.py` file.
 
-If the game crashes when executing the get_start.py file for the first time, you can try executing it again.
+- If the game crashes when executing the `get_start.py` file for the first time, you can try executing it again.
 
-##### When running get_start.py on an Ubuntu system, there is an issue with Wine getting stuck.
+##### When running `get_start.py` on an Ubuntu system, there is an issue with Wine getting stuck.
 
-Try quitting get_start.py and running the get_start.py file again. 
+- Try quitting `get_start.py` and running the `get_start.py` file again. 
 
 ##### Game setting
 
