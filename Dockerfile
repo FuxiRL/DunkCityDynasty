@@ -34,5 +34,5 @@ RUN pip3.8 install gymnasium==0.26.3
 RUN pip3.8 install opencv-python==4.5.5.64
 RUN pip3.8 install grpcio==1.54.0 
 RUN pip3.8 install grpcio-tools==1.54.0 
-
+RUN pip3.8 install jsonlines==3.1.0
 
