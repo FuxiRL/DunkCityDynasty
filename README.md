@@ -24,7 +24,7 @@ Dunk City Dynasty is an exciting new multiplayer online basketball game develope
 
 #### Observation Space
 
-Similar to traditional multi-agent environments, the Dunk City Dynasty Environment's observation space is comprised of several key elements, including `global_state`, `self_state`, `ally state`, `enemy state`, and `legal action`. Within the `ally state` and `enemy state` components, players can access the unique state features of both their teammates and opponents, respectively. For more in-depth information regarding these features, please refer to [here](./assets/state.md).
+Similar to traditional multi-agent environments, the Dunk City Dynasty Environment's observation space is comprised of several key elements, including `global_state`, `self_state`, `ally state`, `enemy state`, and `legal action` (Each key element is a dictionary that contains specific attributes.). Within the `ally state` and `enemy state` components, players can access the unique state features of both their teammates and opponents, respectively. For more in-depth information regarding these features, please refer to [here](./assets/state.xlsx).
 
 #### Action Space
 
