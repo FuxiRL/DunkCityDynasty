@@ -24,15 +24,15 @@ Dunk City Dynasty is an exciting new multiplayer online basketball game develope
 
 #### Observation Space
 
-Similar to traditional multi-agent environments, the Dunk City Dynasty Environment's observation space is comprised of several key elements, including `global_state`, `self_state`, `ally state`, `enemy state`, and `legal action`. Within the `ally state` and `enemy state` components, players can access the unique state features of both their teammates and opponents, respectively. For more in-depth information regarding these features, please refer to [here](https://gpt-api-demo.hz.netease.com/assets/state.md).
+Similar to traditional multi-agent environments, the Dunk City Dynasty Environment's observation space is comprised of several key elements, including `global_state`, `self_state`, `ally state`, `enemy state`, and `legal action`. Within the `ally state` and `enemy state` components, players can access the unique state features of both their teammates and opponents, respectively. For more in-depth information regarding these features, please refer to [here](./assets/state.md).
 
 #### Action Space
 
-Within the Dunk City Dynasty Environment, each role possesses a diverse range of executed actions, while simultaneously sharing several key `movement actions`, including Up, Up Right, Right, Down Right, Down, Down Left, Left, Up Left, as well as a `Noop action`, `Cancel action`, and `Pass Ball action`. In addition to these shared actions, each character also has their own `unique basic skills` and `special skills`. Overall, the action space within the game is a 52-dimensional discrete action space. For more detailed information regarding specific actions, please consult [the related documentation](https://gpt-api-demo.hz.netease.com/assets/role_action.xlsx).
+Within the Dunk City Dynasty Environment, each role possesses a diverse range of executed actions, while simultaneously sharing several key `movement actions`, including Up, Up Right, Right, Down Right, Down, Down Left, Left, Up Left, as well as a `Noop action`, `Cancel action`, and `Pass Ball action`. In addition to these shared actions, each character also has their own `unique basic skills` and `special skills`. Overall, the action space within the game is a 52-dimensional discrete action space. For more detailed information regarding specific actions, please consult [the related documentation](./assets/role_action.xlsx).
 
 #### Game Event
 
-The Dunk City Dynasty Environment event comprises several key components, including `shoot event`, `steal event`, `block event`, `pickup event`, `rebound event`, and `screen event`. For more information regarding these events, please consult [here](https://gpt-api-demo.hz.netease.com/assets/event.md).
+The Dunk City Dynasty Environment event comprises several key components, including `shoot event`, `steal event`, `block event`, `pickup event`, `rebound event`, and `screen event`. For more information regarding these events, please consult [here](./assets/event.md).
 
 ## QuickStart
 
