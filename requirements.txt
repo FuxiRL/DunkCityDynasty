@@ -10,3 +10,4 @@ grpcio==1.54.0
 grpcio-tools==1.54.0 
 protobuf==4.22.3
 gymnasium==0.26.3
+jsonlines==3.1.0
