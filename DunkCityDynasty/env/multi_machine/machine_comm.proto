@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package comm;
+
+message ClientCmd{
+    int32 client_id = 1;
+    string cmd = 2;
+    string rl_server_ip = 3;
+    int32 rl_server_port = 4;
+
+}
+
+message Reply {
+    string msg = 1;
+}
+
+service ClientComm {
+    rpc Cmd (ClientCmd) returns (Reply) {}
+}
