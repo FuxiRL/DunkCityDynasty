@@ -1,26 +1,7 @@
-#!/usr/bin/env python
-# coding=utf-8
-'''
-Author: JiangJi
-Email: johnjim0816@gmail.com
-Date: 2023-04-27 14:59:30
-LastEditor: JiangJi
-LastEditTime: 2023-04-27 16:33:10
-Discription: 
-'''
-import sys,os
-import torch
-import torch.nn as nn
-import gymnasium as gym
-import numpy as np
 import ray
 from ray import air, tune
 from ray.rllib.algorithms.bc import BCConfig
 from ray.tune.registry import register_env
-from ray.rllib.models import ModelCatalog
-from ray.rllib.models.torch.torch_modelv2 import TorchModelV2
-from ray.rllib.models.torch.fcnet import FullyConnectedNetwork as TorchFC
-from ray.rllib.policy.policy import PolicySpec
 
 from DunkCityDynasty.env.bc_env import RayBCEnv
 from DunkCityDynasty.wrapper.gym_wrapper import RayBCWrapper
@@ -28,10 +9,13 @@ from DunkCityDynasty.wrapper.gym_wrapper import RayBCWrapper
 if __name__ == '__main__':
     ray.shutdown()
     ray.init()
+
     wrapper = RayBCWrapper({})
     obs_space = wrapper.observation_space
     act_space = wrapper.action_space
+
     register_env("my_env", lambda config: RayBCEnv(config))
+
     env_config = {
         'id': 1,
         'env_setting': 'win',
@@ -43,7 +27,6 @@ if __name__ == '__main__':
         'episode_horizon': 100000,
     }
 
-    
     config = (
         BCConfig()
         .framework("torch")
@@ -53,20 +36,20 @@ if __name__ == '__main__':
             enable_connectors=False,
         )
         .environment(
-        env = "my_env",
-        env_config = env_config,
-        observation_space = obs_space,
-        action_space = act_space,
+            env = "my_env",
+            env_config = env_config,
+            observation_space = obs_space,
+            action_space = act_space,
         )
         .training(
-        train_batch_size=256,
-        lr=0.0001,
+            train_batch_size=256,
+            lr=0.0001,
         )
         .debugging(
-        log_level="INFO",
+            log_level="INFO",
         )
         .offline_data(
-        input_ = f"{os.getcwd()}\\human_data\\human_data_processed.json"
+            input_ = "./human_data/human_data_processed.json"
         )
     )
 

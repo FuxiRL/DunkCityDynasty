@@ -1,11 +1,10 @@
 import gymnasium as gym
 import numpy as np
 
-
-class SimpleGymWrapper():
+class RayBCWrapper():
     def __init__(self, config):
         self.config = config
-        self.observation_space = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(226,), dtype=np.float32)
+        self.observation_space = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(174,), dtype=np.float32)
         self.action_space = gym.spaces.Discrete(52)
 
     def reset(self):

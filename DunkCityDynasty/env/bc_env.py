@@ -1,19 +1,7 @@
-#!/usr/bin/env python
-# coding=utf-8
-'''
-Author: JiangJi
-Email: johnjim0816@gmail.com
-Date: 2023-04-27 16:30:29
-LastEditor: JiangJi
-LastEditTime: 2023-04-27 16:30:48
-Discription: 
-'''
-import numpy as np
-import gymnasium as gym
 from ray.rllib.env import MultiAgentEnv
 
 from DunkCityDynasty.env.base import BaseEnv
-from DunkCityDynasty.wrapper.gym_wrapper import RayBCWrapper
+from DunkCityDynasty.wrapper.bc_wrapper import RayBCWrapper
 
 
 class RayBCEnv(MultiAgentEnv):

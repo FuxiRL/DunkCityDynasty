@@ -76,20 +76,20 @@ if __name__ == '__main__':
             enable_connectors=False,
         )
         .environment(
-        env = "my_env",
-        env_config = env_config,
-        observation_space = obs_space,
-        action_space = act_space,
+            env = "my_env",
+            env_config = env_config,
+            observation_space = obs_space,
+            action_space = act_space,
         )
         .training(
-        model = {
-            "custom_model": "my_model",
-            "custom_model_config": {
-                "fcnet_hiddens": [256, 256],
+            model = {
+                "custom_model": "my_model",
+                "custom_model_config": {
+                    "fcnet_hiddens": [256, 256],
+                },
             },
-        },
-        train_batch_size=256,
-        lr=0.0001,
+            train_batch_size=256,
+            lr=0.0001,
         )
         .multi_agent(
             policies = {
@@ -99,8 +99,7 @@ if __name__ == '__main__':
             policy_mapping_fn= lambda agent_id, episode, worker, **kwargs: "shared_policy",
         )
         .debugging(
-        log_level="INFO",
-        
+            log_level="INFO",
         )
     )
 
