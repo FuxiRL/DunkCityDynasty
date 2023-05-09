@@ -141,7 +141,7 @@ python train_ppo.py
 
 ## Appendix
 
-We will soon release the download links for the game client and player data.
+We will soon release the download links for the game client.
 
 - **Game Client:** The game client is an executable program for Dunk City Dynasty. The program can be run directly on Windows systems, or on Linux systems through Wine.
 - **Human Data: [(link.)](https://github.com/FuxiRL/DunkCityDynasty.git)** The DunkCityDynasty dataset contains almost 400GB human data and records the state-action pairs of human players within a game (with approximately one frame recorded every 150ms). The state features include global game features (such as game time, score, etc.) and attribute features of six players (such as position, speed, orientation, etc.). The action features consist of 52-dimensional discrete actions, including noop, movement, passing, skills, etc. In terms of player roles, the DunkCityDynasty dataset provides player data for five roles: Phillip, Lolo, Doncic, Hayward, and Curry, which covers the basic positions in a basketball game. In terms of player ability segmentation, based on the actual segmentation of the game players, we divided the dataset into low, medium, and high-level player data, with little difference in the amount of player data in each segment.
