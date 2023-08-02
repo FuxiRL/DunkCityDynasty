@@ -18,6 +18,8 @@ class RayEnv(MultiAgentEnv):
         self.env_wrapper = SimpleGymWrapper({})
         self.observation_space = self.env_wrapper.observation_space
         self.action_space = self.env_wrapper.action_space
+        self.last_states = None
+
 
     def reset(self, **kwargs):
         # wrapper reset
@@ -30,18 +32,27 @@ class RayEnv(MultiAgentEnv):
         states = self.env_wrapper.state_wrapper(raw_states)
         infos = self.env_wrapper.info_wrapper(raw_states)
 
+        self.last_states = states
+
         return states, infos
     
     def step(self, action_dict):
         # env reset
-        raw_states, done = self.external_env.step(action_dict)
-
-        # feature embedding
-        states = self.env_wrapper.state_wrapper(raw_states)
-        rewards = self.env_wrapper.reward_wrapper(raw_states)
-        infos = self.env_wrapper.info_wrapper(raw_states)
-        dones = {"__all__": done}
-        truncated = {"__all__": done}
+        try: # avoid game disconnect error
+            raw_states, done = self.external_env.step(action_dict)
+            # feature embedding
+            states = self.env_wrapper.state_wrapper(raw_states)
+            self.last_states = states
+            rewards = self.env_wrapper.reward_wrapper(raw_states)
+            infos = self.env_wrapper.info_wrapper(raw_states)
+            dones = {"__all__": done}
+            truncated = {"__all__": done}
+        except:
+            states = self.last_states
+            rewards = {key: 0 for key in states.keys()}
+            dones = {"__all__": True}
+            infos = {key: {} for key in states.keys()}
+            truncated = {"__all__": True}
 
         return states, rewards, dones, truncated, infos
     
