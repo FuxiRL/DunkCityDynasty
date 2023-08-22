@@ -153,14 +153,14 @@ The more in-depth information of `global_state` and agent states (including `sel
 |         stature          |                    Stature of  player(cm)                    |                                                    |
 | rational_shoot_distance  |              Rational shoot  distance of player              |                                                    |
 |     position_x(y,z)      |               Cartesian  coordinates of player               |                                                    |
-|        v_delta_x         |            The player's  velocity on the x-axis.             |                                                    |
-|        v_delta_z         | The  player's velocity on the z-axis. The basketball court plane is formed by the  x and z axes. |                                                    |
+|        v_delta_x         |             The player's  velocity on the x-axis             |                                                    |
+|        v_delta_z         | The  player's velocity on the z-axis. The basketball court plane is formed by the  x and z axes |                                                    |
 |  player_to_me_dis_x(z)   |                                                              |                                                    |
 |  basket_to_me_dis_x(z)   |                                                              |                                                    |
 |   ball_to_me_dis_x(z)    |                                                              |                                                    |
 |   polar_to_me_angle(r)   |                                                              |                                                    |
 | polar_to_basket_angle(r) |                                                              |                                                    |
-|      facing_x(y,z)       |                   Player's facing  vector.                   |                                                    |
+|      facing_x(y,z)       |                   Player's facing  vector                    |                                                    |
 |  block_remain_best_time  |                                                              |                                                    |
 |    block_remain_time     |                                                              |                                                    |
 |    is_out_three_line     |                                                              |                                                    |
@@ -208,8 +208,6 @@ Reward event mainly includes the following points:
 
 And the unique features of each event are shown in the following table. Note that "screen" does not have its own unique features.
 
-
-
 |  Event Key  |   Feature Key    |                         Description                          |
 | :---------: | :--------------: | :----------------------------------------------------------: |
 |  **score**  |      score       |                         Score value                          |
@@ -248,14 +246,12 @@ The state events are listed as following table:
 |    **pass_fail**    |                         Pass failed                          |
 
 
-
-
 ## End Values
 ## Action
 
 In our environment, a total of 52 actions are reserved, of which 12 actions are common actions for all players as shown in the table below. The remainder are skill infos for each player, and the types and numbers of these skills vary, which can be referred in `Skill Info` of `Players` part.
 
-| action index | Description | action index |     Description     |
+| Action Index | Description | Action Index |     Description     |
 | :----------: | :---------: | :----------: | :-----------------: |
 |      0       |    Noop     |      6       |      Move: 45       |
 |      1       |  Move: 90   |      7       |      Move: 225      |
@@ -268,9 +264,15 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 
 ### Jokic
 
+#### Base Info
+
+|                             Info                             |                            Radar                             |                            Avatar                            |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| Name: $\text{ Jokic}$<br/>Character ID: $2$<br/>Position: $\text{C}$<br/>Stature:  $\text{211 CM}$<br/>Signature Skills:<br/>$\text{Dream Shake, Heavy Screen}$ | <img src="../figs/Jokic_radar.png" alt="James" style="zoom:50%;" /> | <img src="../figs/Jokic.jpg" alt="James" style="zoom:110%;" /> |
+
 #### Skill Info
 
-| action index |      Description       | action index |      Description       |
+| Action index |      Description       | Action index |      Description       |
 | :----------: | :--------------------: | :----------: | :--------------------: |
 |      12      |         Shoot          |      24      |   Dream Shake Second   |
 |      13      |  Post up, Pivot left   |      25      |    High Vision Pass    |
@@ -283,17 +285,45 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 |      20      |       Accelerate       |      32      |    Hook Shot(Left)     |
 |      21      | Running alley-oop pass |      33      |    Hook Shot(Right)    |
 |      22      |       Jump Ball        |      34      |       Quick Shot       |
-|      23      |   Dream Shake First    |
+|      23      |   Dream Shake First    |||
 
 ### Zion
 
-#### Skill Info
+#### Base Info
+
+|                             Info                             |                            Radar                             | Avatar                                                       |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | ------------------------------------------------------------ |
+| Name: $\text{ Zion}$<br/>Character ID: $9$<br/>Position: $\text{PF}$<br/>Stature:  $\text{198 CM}$<br/>Signature Skills:<br/>$\text{Soaring Dunk, Tiger Instinct}$ | <img src="../figs/Zion_radar.png" alt="James" style="zoom:50%;" /> | <img src="../figs/Zion.jpg" alt="James" style="zoom:110%;" /> |
+
+####  Skill Info
+
+| Action index |      Description       | Action index |      Description       |
+| :----------: | :--------------------: | :----------: | :--------------------: |
+|      12      |      Drive  Left       |      25      |       Full Block       |
+|      13      |      Drive Right       |      26      |    Focus-3-Pointer     |
+|      14      |     Call For Ball      |      27      |      Tank Charge       |
+|      15      |         Screen         |      28      |     Drive Fadeaway     |
+|      16      |        Defense         |      29      |  Post King(2Pt Left)   |
+|      17      |        Rebound         |      30      |  Post King(2Pt Right)  |
+|      18      |         Steal          |      31      |   3Pt King(3Pt Left)   |
+|      19      |         Cover          |      32      |  3Pt King(3Pt Right)   |
+|      20      |       Accelerate       |      33      |     Tank Dunk(Far)     |
+|      21      | Jump Ball |      34      |   Turnaround Charge    |
+|      22      | Two-handed Slam Dunk |      35      |    One-Handed Dunk     |
+|      23      | Forceful Passing |      36      |  Turnaround Fadeaway   |
+|      24      | Tank Turnaround(Right) |||
 
 ### James
 
+#### Base Info
+
+|                             Info                             |                            Radar                             |                            Avatar                            |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| Name: $\text{ James}$<br/>Character ID: $1$<br/>Position: $\text{SF}$<br/>Stature:  $\text{206 CM}$<br/>Signature Skills:<br/>$\text{Post King, Two-Way Play}$ | <img src="../figs/James_radar.png" alt="James" style="zoom:50%;" /> | <img src="../figs/James.jpg" alt="James" style="zoom:110%;" /> |
+
 #### Skill Info
 
-| action index |      Description       | action index |      Description       |
+| Action index |      Description       | Action index |      Description       |
 | :----------: | :--------------------: | :----------: | :--------------------: |
 |      12      |      Drive  Left       |      25      |       Full Block       |
 |      13      |      Drive Right       |      26      |    Focus-3-Pointer     |
@@ -307,57 +337,66 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 |      21      |       Jump Ball        |      34      |   Turnaround Charge    |
 |      22      |      James' Shot       |      35      |    One-Handed Dunk     |
 |      23      | Tank Turnaround(Left)  |      36      |  Turnaround Fadeaway   |
-|      24      | Tank Turnaround(Right) |
+|      24      | Tank Turnaround(Right) |||
 
+### Thompson
 
+#### Base Info
 
+|                             Info                             |                            Radar                             | Avatar                                                       |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | ------------------------------------------------------------ |
+| Name: $\text{ Thompson}$<br/>Character ID: $82$<br/>Position: $\text{SG}$<br/>Stature:  $\text{198 CM}$<br/>Signature Skills:<br/>$\text{Stable 3pt, Rhythm Reader}$ | <img src="../figs/Thompson_radar.png" alt="James" style="zoom:50%;" /> | <img src="../figs/Thompson.jpg" alt="James" style="zoom:110%;" /> |
 
+#### Skill Info
 
-
-
-
-
-
-
-
+| Action index |        Description        | Action index |      Description       |
+| :----------: | :-----------------------: | :----------: | :--------------------: |
+|      12      |           Shoot           |      31      |       Cut Layup        |
+|      13      |        Drive Left         |      32      |     Rhythm Reader      |
+|      14      |        Drive Right        |      33      |  Rhythm Reader (Dunk)  |
+|      15      |       Call For Ball       |      34      |       Stable 3pt       |
+|      16      |          Screen           |      35      | Transtion Pull-up 3(1) |
+|      17      |          Defense          |      36      | Transtion Pull-up 3(2) |
+|      18      |          Rebound          |      37      |      Pass & Dash       |
+|      19      |           Block           |      38      |   Drift Pass (Dunk)    |
+|      20      |           Cover           |      39      |   Drift Pass (Shoot)   |
+|      21      |  Running alley-oop pass   |      40      |   Dash & Accelerate    |
+|      22      |         Jump Ball         |      41      |     Pull-Up Drift      |
+|      23      |      Thompson Drive       |      42      |     Stable 3pt(1)      |
+|      24      |        Accelerate         |      43      |     Stable 3pt(2)      |
+|      25      | Catch & Shoot (Call Ball) |      44      |     Stable 3pt(3)      |
+|      26      |       Catch & Shoot       |      45      |     Pass & Dash(1)     |
+|      27      |        Drift Shot         |      46      |     Pass & Dash(2)     |
+|      28      |    Sliding Disruption     |              |                        |
+|      29      |      Fake Shot Pass       |              |                        |
+|      30      |       Rhythmic Dash       |              |                        |
 
 ### Curry
 
-#### Skill Info
-### Donic
+#### Base Info
+
+|                             Info                             |                            Radar                             | Avatar                                                       |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | ------------------------------------------------------------ |
+| Name: $\text{ Curry}$<br/>Character ID: $3$<br/>Position: $\text{PG}$<br/>Stature:  $\text{188 CM}$<br/>Signature Skills:<br/>$\text{Curry Gravity, Never Give Up}$ | <img src="../figs/Curry_radar.png" alt="James" style="zoom:50%;" /> | <img src="../figs/Curry.jpg" alt="Curry" style="zoom:110%;" /> |
 
 #### Skill Info
 
-| action index |         Description         |
-| :----------: | :-------------------------: |
-|      12      |            Shoot            |
-|      13      |         Drive Left          |
-|      14      |         Drive Right         |
-|      15      |        Call For Ball        |
-|      16      |           Screen            |
-|      17      |           Defense           |
-|      18      |           Rebound           |
-|      19      |            Block            |
-|      20      |            Steal            |
-|      21      |            Cover            |
-|      22      |         Accelerate          |
-|      23      |   Running alley-oop pass    |
-|      24      |          Jump Ball          |
-|      25      |       Drive in place        |
-|      26      |    Magic Pass(hook pass)    |
-|      27      | Magic Pass(drive and dish)  |
-|      28      |  Inside-out 3-Point(left)   |
-|      29      |  Inside-out 3-Point(right)  |
-|      30      |          Step-back          |
-|      31      |      Hesitation Drive       |
-|      32      |      Turnaround Finish      |
-|      33      |        Post Fadeaway        |
-|      34      |      Slide Step Drive       |
-|      35      | Changeable 3-Pointer(left)  |
-|      36      | Changeable 3-Pointer(right) |
-|      37      |       Half-Turnaround       |
-|      38      |       Fake Up-and-Und       |
-|      39      |     Fadeaway Up-and-und     |
+| Action index |       Description        | Action index |        Description        |
+| :----------: | :----------------------: | :----------: | :-----------------------: |
+|      12      |       Drive  Left        |      26      |       Catch & Shoot       |
+|      13      |       Drive Right        |      27      | Sidestep 3-pointer(Left)  |
+|      14      |      Call For Ball       |      28      | Sidestep 3-pointer(Right) |
+|      15      |          Screen          |      29      |     Soft Finger Roll      |
+|      16      |         Defense          |      30      |           Dash            |
+|      17      |         Rebound          |      31      |       Curry Gravity       |
+|      18      |          Block           |      32      |           Shoot           |
+|      19      |          Steal           |      33      |   Reverse Running(Back)   |
+|      20      |          Cover           |      34      |   Reverse Running(Left)   |
+|      21      | Running alley-oop pass 1 |      35      |  Reverse Running(Right)   |
+|      22      |        Accelerate        |      36      |     Turn & Pull-back      |
+|      23      | Running alley-oop pass 2 |      37      |       Turn & Shoot        |
+|      24      |        Jump Ball         |      38      |  Back Dribble Hesitation  |
+|      25      |      Behind Dribble      |              |                           |
 
 ## Built-in Rules
 
