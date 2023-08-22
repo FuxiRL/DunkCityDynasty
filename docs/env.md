@@ -1,6 +1,15 @@
 # Environment Info
 
-## State Info
+The state information that we receive in our game mainly consists of the following three parts:
+
+* Infos : The information of the game, including reward event info and end values.
+* Raw States : The raw state of the environment, which is in the form of a dictionary.
+* Legal Action : The legal action of the player for current state.
+
+The reward event is an event used to help users construct environmental rewards, and it is refreshed every step. And the end values are sent at the end of each round and contain information such as victory or defeat, to help users understand additional information. They will be introduced as separate parts as following like raw states.
+
+
+## State
 
 The raw state of the environment is a dictionary with the following keys:
 
@@ -11,7 +20,6 @@ The raw state of the environment is a dictionary with the following keys:
 * `enemy_0_state`: the state of the first enemy player $0$, similar to `self_state`.
 * `enemy_1_state`: the state of the second enemy player $1$, similar to `self_state`.
 * `enemy_2_state`: the state of the third enemy player $2$, similar to `self_state`.
-* `legal action`: the legal action of the player for current state.
 
 The more in-depth information of `global_state` and agent states (including `self_state` and the other $5 $players) is shown in the following tables.
 
@@ -71,9 +79,12 @@ The more in-depth information of `global_state` and agent states (including `sel
 | player_state             |                                                              |                                                    |
 | skill_state              |                                                              |                                                    |
 
-## Action Info
+## Reward Event
 
-In our environment, a total of 52 actions are reserved, of which 12 actions are common actions for all players as shown in the table below. The remainder are skill infos for each player, and the types and numbers of these skills vary, which can be referred in Player Info part.
+## End Values
+## Action
+
+In our environment, a total of 52 actions are reserved, of which 12 actions are common actions for all players as shown in the table below. The remainder are skill infos for each player, and the types and numbers of these skills vary, which can be referred in `Skill Info` of `Players` part.
 
 | action index | Description         |
 | ------------ | ------------------- |
@@ -92,7 +103,7 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 
 
 
-## Player Info
+## Players
 
 ### Jokic
 
@@ -126,7 +137,11 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 
 ### Zion
 
+#### Skill Info
+
 ### James
+
+#### Skill Info
 
 | action index |      Description       |
 | :----------: | :--------------------: |
@@ -158,7 +173,10 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 
 ### Curry
 
+#### Skill Info
 ### Donic
+
+#### Skill Info
 
 | action index |         Description         |
 | :----------: | :-------------------------: |
@@ -191,5 +209,4 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 |      38      |       Fake Up-and-Und       |
 |      39      |     Fadeaway Up-and-und     |
 
-## Reward Event Info
 
