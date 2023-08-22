@@ -272,20 +272,16 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 
 #### Skill Info
 
-| Action index |      Description       | Action index |      Description       |
-| :----------: | :--------------------: | :----------: | :--------------------: |
-|      12      |         Shoot          |      24      |   Dream Shake Second   |
-|      13      |  Post up, Pivot left   |      25      |    High Vision Pass    |
-|      14      |  Post up, Pivot right  |      26      |      Soft Floater      |
-|      15      |     Call For Ball      |      27      |      Heavy Screen      |
-|      16      |        Defense         |      28      |      Stable Layup      |
-|      17      |        Rebound         |      29      |   Jokic's Post Move    |
-|      18      |         Block          |      30      |  Heavyweight Box Out   |
-|      19      |         Steal          |      31      |       Slick Pass       |
-|      20      |       Accelerate       |      32      |    Hook Shot(Left)     |
-|      21      | Running alley-oop pass |      33      |    Hook Shot(Right)    |
-|      22      |       Jump Ball        |      34      |       Quick Shot       |
-|      23      |   Dream Shake First    |||
+| Index |      Description       | Index |      Description       | Index |      Description       |
+| :----------: | :--------------------: | :----------: | :--------------------: | :----------: | :--------------------: |
+|      12      |         Shoot          |      20      |       Accelerate       |28|Stable Layup|
+|      13      |  Post up, Pivot left   |      21      | Running alley-oop pass |29|Jokic's Post Move|
+|      14      |  Post up, Pivot right  |      22      |       Jump Ball        |30|Heavyweight Box Out|
+|      15      |     Call For Ball      |      23      |   Dream Shake First    |31|Slick Pass|
+|      16      |        Defense         |      24      |   Dream Shake Second   |32|Hook Shot(Left)|
+|      17      |        Rebound         |      25      |    High Vision Pass    |33|Hook Shot(Right)|
+|      18      |         Block          |      26      |      Soft Floater      |34|Quick Shot|
+|      19      |         Steal          |      27      |      Heavy Screen      |||
 
 ### Zion
 
@@ -297,21 +293,17 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 
 ####  Skill Info
 
-| Action index |      Description       | Action index |      Description       |
-| :----------: | :--------------------: | :----------: | :--------------------: |
-|      12      |      Drive  Left       |      25      |       Full Block       |
-|      13      |      Drive Right       |      26      |    Focus-3-Pointer     |
-|      14      |     Call For Ball      |      27      |      Tank Charge       |
-|      15      |         Screen         |      28      |     Drive Fadeaway     |
-|      16      |        Defense         |      29      |  Post King(2Pt Left)   |
-|      17      |        Rebound         |      30      |  Post King(2Pt Right)  |
-|      18      |         Steal          |      31      |   3Pt King(3Pt Left)   |
-|      19      |         Cover          |      32      |  3Pt King(3Pt Right)   |
-|      20      |       Accelerate       |      33      |     Tank Dunk(Far)     |
-|      21      | Jump Ball |      34      |   Turnaround Charge    |
-|      22      | Two-handed Slam Dunk |      35      |    One-Handed Dunk     |
-|      23      | Forceful Passing |      36      |  Turnaround Fadeaway   |
-|      24      | Tank Turnaround(Right) |||
+| Index |      Description       | Index |      Description       | Index | Description |
+| ------------ | :--------------------: | :----------: | :--------------------: | :--------------------: | :--------------------: |
+|      12      |      Drive  Left       |      21      |       Jump Ball        |       30       |       Post King(2Pt Right)       |
+|      13      |      Drive Right       |      22      |  Two-handed Slam Dunk  |    31   | 3Pt King(3Pt Left) |
+|      14      |     Call For Ball      |      23      |    Forceful Passing    |      32     | 3Pt King(3Pt Right) |
+|      15      |         Screen         |      24      | Tank Turnaround(Right) |     33     |     Tank Dunk(Far)     |
+|      16      |        Defense         |      25      |       Full Block       |  34 | Turnaround Charge |
+|      17      |        Rebound         |      26      |    Focus-3-Pointer     |  35  |  One-Handed Dunk  |
+|      18      |         Steal          |      27      |      Tank Charge       |   36   |   Turnaround Fadeaway   |
+|      19      |         Cover          |      28      |     Drive Fadeaway     |     |     |
+|      20      |       Accelerate       |      29      |  Post King(2Pt Left)   |          |          |
 
 ### James
 
@@ -323,21 +315,17 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 
 #### Skill Info
 
-| Action index |      Description       | Action index |      Description       |
-| :----------: | :--------------------: | :----------: | :--------------------: |
-|      12      |      Drive  Left       |      25      |       Full Block       |
-|      13      |      Drive Right       |      26      |    Focus-3-Pointer     |
-|      14      |     Call For Ball      |      27      |      Tank Charge       |
-|      15      |         Screen         |      28      |     Drive Fadeaway     |
-|      16      |        Defense         |      29      |  Post King(2Pt Left)   |
-|      17      |        Rebound         |      30      |  Post King(2Pt Right)  |
-|      18      |         Steal          |      31      |   3Pt King(3Pt Left)   |
-|      19      |         Cover          |      32      |  3Pt King(3Pt Right)   |
-|      20      |       Accelerate       |      33      |     Tank Dunk(Far)     |
-|      21      |       Jump Ball        |      34      |   Turnaround Charge    |
-|      22      |      James' Shot       |      35      |    One-Handed Dunk     |
-|      23      | Tank Turnaround(Left)  |      36      |  Turnaround Fadeaway   |
-|      24      | Tank Turnaround(Right) |||
+| Index |      Description       | Index |      Description       | Index | Description |
+| :----------: | :--------------------: | :----------: | :--------------------: | :--------------------: | ---------------------- |
+|      12      |      Drive  Left       |  21   |       Jump Ball        |       30       |       Post King(2Pt Right)       |
+|      13      |      Drive Right       |  22   |      James' Shot       |    31   | 3Pt King(3Pt Left) |
+|      14      |     Call For Ball      |  23   | Tank Turnaround(Left)  |      32     | 3Pt King(3Pt Right) |
+|      15      |         Screen         |  24   | Tank Turnaround(Right) |     33     |     Tank Dunk(Far)     |
+|      16      |        Defense         |  25   |       Full Block       |  34 | Turnaround Charge |
+|      17      |        Rebound         |  26   |    Focus-3-Pointer     |  35  |  One-Handed Dunk  |
+|      18      |         Steal          |  27   |      Tank Charge       |   36   |   Turnaround Fadeaway   |
+|      19      |         Cover          |  28   |     Drive Fadeaway     |     |     |
+|      20      |       Accelerate       |  29   |  Post King(2Pt Left)   |          |          |
 
 ### Thompson
 
@@ -349,27 +337,21 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 
 #### Skill Info
 
-| Action index |        Description        | Action index |      Description       |
-| :----------: | :-----------------------: | :----------: | :--------------------: |
-|      12      |           Shoot           |      31      |       Cut Layup        |
-|      13      |        Drive Left         |      32      |     Rhythm Reader      |
-|      14      |        Drive Right        |      33      |  Rhythm Reader (Dunk)  |
-|      15      |       Call For Ball       |      34      |       Stable 3pt       |
-|      16      |          Screen           |      35      | Transtion Pull-up 3(1) |
-|      17      |          Defense          |      36      | Transtion Pull-up 3(2) |
-|      18      |          Rebound          |      37      |      Pass & Dash       |
-|      19      |           Block           |      38      |   Drift Pass (Dunk)    |
-|      20      |           Cover           |      39      |   Drift Pass (Shoot)   |
-|      21      |  Running alley-oop pass   |      40      |   Dash & Accelerate    |
-|      22      |         Jump Ball         |      41      |     Pull-Up Drift      |
-|      23      |      Thompson Drive       |      42      |     Stable 3pt(1)      |
-|      24      |        Accelerate         |      43      |     Stable 3pt(2)      |
-|      25      | Catch & Shoot (Call Ball) |      44      |     Stable 3pt(3)      |
-|      26      |       Catch & Shoot       |      45      |     Pass & Dash(1)     |
-|      27      |        Drift Shot         |      46      |     Pass & Dash(2)     |
-|      28      |    Sliding Disruption     |              |                        |
-|      29      |      Fake Shot Pass       |              |                        |
-|      30      |       Rhythmic Dash       |              |                        |
+| Index |      Description       | Index |        Description        | Index | Description            |
+| :---: | :--------------------: | :---: | :-----------------------: | :---: | ---------------------- |
+|  12   |         Shoot          |  24   |        Accelerate         |  36   | Transtion Pull-up 3(2) |
+|  13   |       Drive Left       |  25   | Catch & Shoot (Call Ball) |  37   | Pass & Dash            |
+|  14   |      Drive Right       |  26   |       Catch & Shoot       |  38   | Drift Pass (Dunk)      |
+|  15   |     Call For Ball      |  27   |        Drift Shot         |  39   | Drift Pass (Shoot)     |
+|  16   |         Screen         |  28   |    Sliding Disruption     |  40   | Dash & Accelerate      |
+|  17   |        Defense         |  29   |      Fake Shot Pass       |  41   | Pull-Up Drift          |
+|  18   |        Rebound         |  30   |       Rhythmic Dash       |  42   | Stable 3pt(1)          |
+|  19   |         Block          |  31   |         Cut Layup         |  43   | Stable 3pt(2)          |
+|  20   |         Cover          |  32   |       Rhythm Reader       |  44   | Stable 3pt(3)          |
+|  21   | Running alley-oop pass |  33   |   Rhythm Reader (Dunk)    |  45   | Pass & Dash(1)         |
+|  22   |       Jump Ball        |  34   |        Stable 3pt         |  46   | Pass & Dash(2)         |
+|  23   |     Thompson Drive     |  35   |  Transtion Pull-up 3(1)   |       |                        |
+
 
 ### Curry
 
@@ -381,22 +363,17 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 
 #### Skill Info
 
-| Action index |       Description        | Action index |        Description        |
-| :----------: | :----------------------: | :----------: | :-----------------------: |
-|      12      |       Drive  Left        |      26      |       Catch & Shoot       |
-|      13      |       Drive Right        |      27      | Sidestep 3-pointer(Left)  |
-|      14      |      Call For Ball       |      28      | Sidestep 3-pointer(Right) |
-|      15      |          Screen          |      29      |     Soft Finger Roll      |
-|      16      |         Defense          |      30      |           Dash            |
-|      17      |         Rebound          |      31      |       Curry Gravity       |
-|      18      |          Block           |      32      |           Shoot           |
-|      19      |          Steal           |      33      |   Reverse Running(Back)   |
-|      20      |          Cover           |      34      |   Reverse Running(Left)   |
-|      21      | Running alley-oop pass 1 |      35      |  Reverse Running(Right)   |
-|      22      |        Accelerate        |      36      |     Turn & Pull-back      |
-|      23      | Running alley-oop pass 2 |      37      |       Turn & Shoot        |
-|      24      |        Jump Ball         |      38      |  Back Dribble Hesitation  |
-|      25      |      Behind Dribble      |              |                           |
+| Index |  Description  | Index |        Description        | Index |       Description       |
+| :---: | :-----------: | :---: | :-----------------------: | :---: | :---------------------: |
+|  12   |  Drive  Left  |  21   | Running alley-oop pass 1  |  30   |          Dash           |
+|  13   |  Drive Right  |  22   |        Accelerate         |  31   |      Curry Gravity      |
+|  14   | Call For Ball |  23   | Running alley-oop pass 2  |  32   |          Shoot          |
+|  15   |    Screen     |  24   |         Jump Ball         |  33   |  Reverse Running(Back)  |
+|  16   |    Defense    |  25   |      Behind Dribble       |  34   |  Reverse Running(Left)  |
+|  17   |    Rebound    |  26   |       Catch & Shoot       |  35   | Reverse Running(Right)  |
+|  18   |     Block     |  27   | Sidestep 3-pointer(Left)  |  36   |    Turn & Pull-back     |
+|  19   |     Steal     |  28   | Sidestep 3-pointer(Right) |  37   |      Turn & Shoot       |
+|  20   |     Cover     |  29   |     Soft Finger Roll      |  38   | Back Dribble Hesitation |
 
 ## Built-in Rules
 
