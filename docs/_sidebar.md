@@ -1,2 +1,2 @@
 - [Introduction](/)
-- [Environment Info](/env.md)
+- [Environment Info](/env_info.md)

@@ -4,8 +4,105 @@ The state information that we receive in our game mainly consists of the followi
 
 * Infos : The information of the game, including reward event info and end values.
 * Raw States : The raw state of the environment, which is in the form of a dictionary.
-* Legal Action : The legal action of the player for current state.
+* Legal Actions : The legal action of the player for current state.
 
+A typical state can be represented as follows:
+
+```json
+// just for example, not real values
+{
+    "[member_id]": [
+        // infos
+        {
+            // reward shoot event info
+            "shoot":{
+                "self_id": 1,
+                "event_id": 1,
+                "position": 2,
+                "me": 1,
+                "ally": 0,
+                "enemy": 0,
+                "opponent": 0,
+                "open_shoot": 1,
+                ... // other info
+            },
+            // state event info
+            "state_event":{
+                "free_ball": 1,
+            },
+            // end values
+            "end_values":{
+                "id": 1,
+                "win": 0,
+                "delta": 0,
+                "score": 0,
+                "team_two_try": 1,
+                ... // other info
+            }
+        },
+        // raw states
+        {
+            "global_states":{
+                "attack_remain_time": 10.0,
+                "match_remain_time": 150.0,
+                "is_home_team": 1,
+                ... // other info
+            },
+            "self_state":{
+                "character_id": 1,
+                "position_type": 0,
+                "buff_key": 0,
+                "buff_value": 0,
+                "stature": 200,
+                ... // other info
+            },
+            "ally_0_state":{
+                "character_id": 2,
+                "position_type": 1,
+                "buff_key": 0,
+                "buff_value": 0,
+                "stature": 200,
+                ... // other info
+            },
+            "ally_1_state":{
+                "character_id": 3,
+                "position_type": 2,
+                "buff_key": 0,
+                "buff_value": 0,
+                "stature": 200,
+                ... // other info
+            },
+            "enemy_0_state":{
+                "character_id": 4,
+                "position_type": 3,
+                "buff_key": 0,
+                "buff_value": 0,
+                "stature": 200,
+                ... // other info
+            },
+            "enemy_1_state":{
+                "character_id": 5,
+                "position_type": 4,
+                "buff_key": 0,
+                "buff_value": 0,
+                "stature": 200,
+                ... // other info
+            },
+            "enemy_2_state":{
+                "character_id": 6,
+                "position_type": 5,
+                "buff_key": 0,
+                "buff_value": 0,
+                "stature": 200,
+                ... // other info
+            }
+        },
+        // legal actions
+        [1,1,1,0,0,...,0]
+    ]
+}
+
+```
 The reward event is an event used to help users construct environmental rewards, and it is refreshed every step. And the end values are sent at the end of each round and contain information such as victory or defeat, to help users understand additional information. They will be introduced as separate parts as following like raw states.
 
 
@@ -80,6 +177,78 @@ The more in-depth information of `global_state` and agent states (including `sel
 | skill_state              |                                                              |                                                    |
 
 ## Reward Event
+
+The Reward event mainly consists of two parts. One is events related to various key nodes, such as shooting and stealing, and each event's key name will be presented in the following table. The other is events related to continuous states, such as the ball not going out for a three-pointer.
+
+### Node Events
+
+There will be some common information for each node event, as shown in the following table:
+
+| Feature Key | Description                                    |
+| ----------- | ---------------------------------------------- |
+| self_id     | Player id                                      |
+| event_id    | Event player id                                |
+| position    | Position type of event player                  |
+| me          | Whether the event player is oneself            |
+| ally        | Whether the event player is ally               |
+| enemy       | Whether the event player is enemy              |
+| opponent    | Whether the event player is my opponent player |
+
+Note that you need to distinguish between the event player and the player themselves. The event player refers to the subject of the event, such as the shooting event. However, the game will still send this shooting event information to each player, so that users can share information when conducting multi-agent related processing.
+
+Reward event mainly includes the following points:
+
+* `score`: scoring event, where a player shoots and successfully scores.
+* `shoot`: shooting event, where a player take a shoot try but not necessarily goal in.
+* `steal`: stealing event, where a player tries to steal the other.
+* `block`: blocking event, where a player tries to block the other.
+* `pick up`: picking up event, where a player tries to pick up the ball.
+* `rebound`: rebounding event, where a player tries to rebound.
+* `screen`: screening event, where a player tries to take a screen and roll.
+
+And the unique features of each event are shown in the following table. Note that "screen" does not have its own unique features.
+
+
+
+| Event Key   | Feature Key      | Description                                                  |
+| ----------- | ---------------- | ------------------------------------------------------------ |
+| **score**   | score            | Score value                                                  |
+| **shoot**   | open_shoot       | Whether the player is in an open position or without inference |
+|             | two              | Whether it is a two point try                                |
+|             | three            | Whether it is a three point try                              |
+|             | goal_in          | Whether it is in goal                                        |
+|             | hit_percent      | Hit percent                                                  |
+|             | assist           | Whether the player was involved in the assist                |
+|             | inference        | Whether the player was involved inferencing                  |
+|             | inference_degree | Inference degree                                             |
+| **steal**   | target           | Whether the player was the target of a steal                 |
+|             | hit_percent      | Hit percent                                                  |
+|             | success          | Whether succeed                                              |
+| **block**   | target           | Whether the player was the target of a block                 |
+|             | expected_score   | Expected points (built-in value) of the player who got blocked, mainly determined by whether it was a two or three-point attempt and the degree of defensive interference |
+|             | hit_percent      | Hit percent                                                  |
+|             | success          | Whether succeed                                              |
+| **pickup**  | success          | Whether succeed                                              |
+| **rebound** | success          | Whether succeed                                              |
+| **screen**  |                  |                                                              |
+
+### State Events
+
+The state events are listed as following table: 
+
+| Feature Key         | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| **not_ball_clear**  | The ball didn't go out for a three-pointer, usually happens during a transition of possession |
+| **free_ball**       | The ball is not in any player's hands                        |
+| **attack_time_out** | Attack timing out                                            |
+| **got_defended**    | The player is being defended                                 |
+| **out_of_defend**   | The player shakes off the defense                            |
+| **no_defend_shoot** | The player shoots  without defending                         |
+| **long_pass**       | Long pass, which will cause the player to become stiff in the game |
+| **pass_fail**       | Pass failed                                                  |
+
+
+
 
 ## End Values
 ## Action
@@ -209,4 +378,9 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 |      38      |       Fake Up-and-Und       |
 |      39      |     Fadeaway Up-and-und     |
 
+## Built-in Rules
 
+To facilitate quick training for users, we have built-in two rules in the game:
+
+* `Rule passing the ball beyond the three-point line`: The action of crossing the three-point line mainly occurs during player transitions, and although this behavior model can be learned, it requires a lot of time and is not the main focus of the game.
+* `Rule passing when the ball is dead`: like crossing the three-point line, is also difficult to learn but not a key focus of AI training.
