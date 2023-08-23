@@ -21,6 +21,7 @@ class ClientCom(machine_comm_pb2_grpc.ClientCommServicer):
         cmd = request.cmd
         rl_server_ip = request.rl_server_ip
         rl_server_port = request.rl_server_port
+        user_name = request.user_name
 
         if cmd == 'start_client':
             pid = self._start_client(rl_server_ip, rl_server_port)

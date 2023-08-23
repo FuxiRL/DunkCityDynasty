@@ -27,6 +27,7 @@ class BaseEnv():
         self.rl_server_port = config['rl_server_port']
         self.game_server_ip = config['game_server_ip']
         self.game_server_port = config['game_server_port']
+        self.user_name = config['user_name']
 
         if self.env_setting == 'linux':
             if 'xvfb_display' not in config:
@@ -148,16 +149,16 @@ class BaseEnv():
         """
         if self.env_setting == 'win':
             # run game client 
-            cmd = f'{self.client_path}/Lx33.exe {self.game_server_ip} {self.game_server_port} {self.rl_server_ip} {self.rl_server_port}'
+            cmd = f"{self.client_path}/Lx33.exe {self.game_server_ip} {self.game_server_port} {self.rl_server_ip} {self.rl_server_port} {self.user_name}"
             p = subprocess.Popen(cmd, shell=False)
             pids = [p.pid]
 
         elif self.env_setting == 'linux':
             # run game client
             if self.use_xvfb:
-                cmd = f'export DISPLAY=:{self.xvfb_display} && wine {self.client_path}/Lx33.exe {self.game_server_ip} {self.game_server_port} {self.rl_server_ip} {self.rl_server_port} &'
+                cmd = f'export DISPLAY=:{self.xvfb_display} && wine {self.client_path}/Lx33.exe {self.game_server_ip} {self.game_server_port} {self.rl_server_ip} {self.rl_server_port} {self.user_name}&'
             else:
-                cmd = f'wine {self.client_path}/Lx33.exe {self.game_server_ip} {self.game_server_port} {self.rl_server_ip} {self.rl_server_port} &'
+                cmd = f'wine {self.client_path}/Lx33.exe {self.game_server_ip} {self.game_server_port} {self.rl_server_ip} {self.rl_server_port} {self.user_name}&'
             os.system(cmd)
 
             # get game client pid
@@ -177,6 +178,7 @@ class BaseEnv():
                     cmd='start_client',
                     rl_server_ip=self.rl_server_ip,
                     rl_server_port=self.rl_server_port,
+                    user_name=self.user_name,
                 ))
             if resp.msg == 'ok':
                 pids = [-1]

@@ -7,6 +7,7 @@ message ClientCmd{
     string cmd = 2;
     string rl_server_ip = 3;
     int32 rl_server_port = 4;
+    string user_name = 5;
 
 }
 

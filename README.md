@@ -20,19 +20,9 @@ This repository contains an RL environment based on a commercial online basketba
 
 Dunk City Dynasty is an exciting new multiplayer online basketball game developed by NetEase Games. In this game, players can select their favorite characters to compete in thrilling 3v3 street basketball matches. The game features an impressive roster of player-controlled characters, including popular stars from the National Basketball Association (NBA) like LeBron James, Kevin Durant, Stephen Curry, and many more, each with unique abilities and skills. To succeed in matches and climb the rankings, players must utilize their skills and strategies. For additional information about the game, please visit the official website at https://www.dunkcitymobile.com/.
 
-### Reinforcement Learning Wrapper
+### Docs
 
-#### Observation Space
-
-Similar to traditional multi-agent environments, the Dunk City Dynasty Environment's observation space is comprised of several key elements, including `global_state`, `self_state`, `ally state`, `enemy state`, and `legal action` (Each key element is a dictionary that contains specific attributes.). Within the `ally state` and `enemy state` components, players can access the unique state features of both their teammates and opponents, respectively. For more in-depth information regarding these features, please refer to [here](./assets/state.xlsx).
-
-#### Action Space
-
-Within the Dunk City Dynasty Environment, each role possesses a diverse range of executed actions, while simultaneously sharing several key `movement actions`, including Up, Up Right, Right, Down Right, Down, Down Left, Left, Up Left, as well as a `Noop action`, `Cancel action`, and `Pass Ball action`. In addition to these shared actions, each character also has their own `unique basic skills` and `special skills`. Overall, the action space within the game is a 52-dimensional discrete action space. For more detailed information regarding specific actions, please consult [the related documentation](./assets/role_action.xlsx).
-
-#### Game Event
-
-The Dunk City Dynasty Environment event comprises several key components, including `shoot event`, `steal event`, `block event`, `pickup event`, `rebound event`, and `screen event`. For more information regarding these events, please consult [here](./assets/event.md).
+More details about the environment info can be found at [docs]([./docs/README.md](https://fuxirl.github.io/DunkCityDynasty/)).
 
 ## QuickStart
 
@@ -68,6 +58,7 @@ To install the Dunk City Dynasty Environment, simply follow these steps:
 
 ### Get start
 
+
 After installing the corresponding components, we can run the Dunk City Dynasty Environment with the following python code.
 
 ```python
@@ -81,7 +72,7 @@ config = {
     'game_server_port': 6667,               # port of the game server (we will provide a public IP address and port later)
     'machine_server_ip': '',                # ip of remote machineserver (for multi machine setting)
     'machine_server_port': 0,               # port of remote machineserver (for multi machine setting)
-    'episode_horizon': 100000               # max game steps
+    'user_name': 'xxxxxxx',                 # user name of the game account
     }
 
 env = GymEnv(config)
