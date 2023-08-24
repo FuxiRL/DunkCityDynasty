@@ -22,7 +22,7 @@ Dunk City Dynasty is an exciting new multiplayer online basketball game develope
 
 ### Docs
 
-More details about the environment info can be found at [docs]([./docs/README.md](https://fuxirl.github.io/DunkCityDynasty/)).
+More details about the environment info can be found at [docs](https://fuxirl.github.io/DunkCityDynasty).
 
 ## QuickStart
 
