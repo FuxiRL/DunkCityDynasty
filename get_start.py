@@ -41,7 +41,7 @@ def main():
     #     'game_server_port': 18000,
     #     'machine_server_ip': '',
     #     'machine_server_port': 0,
-    #     'use_name': 'xxxx',
+    #     'user_name': 'xxxx',
     #     'episode_horizon': 100000
     # }
 
@@ -56,7 +56,7 @@ def main():
     #     'game_server_port': 18000,
     #     'machine_server_ip': '10.219.204.76',
     #     'machine_server_port': 6667,
-    #     'use_name': 'xxxx',
+    #     'user_name': 'xxxx',
     #     'episode_horizon': 100000
     # }
 
