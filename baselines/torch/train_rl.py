@@ -136,7 +136,6 @@ def train(env, policy,stats_recorder=None):
             ep_step += 1
             for key in rewards.keys():
                 ep_rewards[key] += rewards[key]
-            print(truncated)
             if truncated['__all__'] or ep_step >= 120:
                 ep_step = 0
                 ep_cnt += 1
