@@ -109,8 +109,16 @@ The Dunk City Dynasty Environment currently supports both Windows and Linux syst
 
 Currently, we provide a simple training code based on the [rllib framework](https://www.ray.io/rllib). You can try to train the agent by running the following code.
 
+RL training:
+
 ```sh
-python train_ppo.py
+python ./baselines/torch/train_rl.py
+```
+
+BC training:
+
+```sh
+python ./baselines/torch/train_bc.py
 ```
 
 ## QA

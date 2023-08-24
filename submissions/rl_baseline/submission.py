@@ -113,7 +113,7 @@ class SimpleWrapper():
     def __init__(self, config):
         self.config = config
 
-    def state_wrapper(self, state_infos):
+    def states_wrapper(self, state_infos):
         states, infos = {}, {}
         for key in state_infos.keys():
             infos[key] = state_infos[key][0]
@@ -246,7 +246,7 @@ class CustomedAgent():
         self.policy.load_model(model_path)
 
     def act(self, state_infos):
-        states, infos = self.wrapper.state_wrapper(state_infos)
+        states, infos = self.wrapper.states_wrapper(state_infos)
         actions = self.policy.get_actions(states)
         return actions
 

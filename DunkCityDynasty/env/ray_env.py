@@ -1,7 +1,7 @@
 from ray.rllib.env import MultiAgentEnv
 
 from DunkCityDynasty.env.base import BaseEnv
-from DunkCityDynasty.wrapper.gym_wrapper import SimpleGymWrapper
+from DunkCityDynasty.wrapper.gym_wrapper import SimpleWrapper
 
 
 class RayEnv(MultiAgentEnv):
@@ -15,22 +15,19 @@ class RayEnv(MultiAgentEnv):
             print("config.worker_index not found")
             pass
 
-        self.env_wrapper = SimpleGymWrapper({})
+        self.env_wrapper = SimpleWrapper({})
         self.observation_space = self.env_wrapper.observation_space
         self.action_space = self.env_wrapper.action_space
         self.last_states = None
 
 
     def reset(self, **kwargs):
-        # wrapper reset
-        self.env_wrapper.reset()
-
         # env reset
         raw_states = self.external_env.reset()
 
         # env reset
-        states = self.env_wrapper.state_wrapper(raw_states)
-        infos = self.env_wrapper.info_wrapper(raw_states)
+        states = self.env_wrapper.states_wrapper(raw_states)
+        infos = self.env_wrapper.infos_wrapper(raw_states)
 
         self.last_states = states
 
@@ -41,10 +38,10 @@ class RayEnv(MultiAgentEnv):
         try: # avoid game disconnect error
             raw_states, done = self.external_env.step(action_dict)
             # feature embedding
-            states = self.env_wrapper.state_wrapper(raw_states)
+            states = self.env_wrapper.states_wrapper(raw_states)
             self.last_states = states
             rewards = self.env_wrapper.reward_wrapper(raw_states)
-            infos = self.env_wrapper.info_wrapper(raw_states)
+            infos = self.env_wrapper.infos_wrapper(raw_states)
             dones = {"__all__": done}
             truncated = {"__all__": done}
         except:

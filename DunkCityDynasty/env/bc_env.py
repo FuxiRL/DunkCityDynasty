@@ -21,14 +21,13 @@ class RayBCEnv(MultiAgentEnv):
 
     def reset(self, **kwargs):
         # wrapper reset
-        self.env_wrapper.reset()
 
         # env reset
         raw_states = self.external_env.reset()
 
         # env reset
-        states = self.env_wrapper.state_wrapper(raw_states)
-        infos = self.env_wrapper.info_wrapper(raw_states)
+        states = self.env_wrapper.states_wrapper(raw_states)
+        infos = self.env_wrapper.infos_wrapper(raw_states)
 
         return states, infos
     
@@ -37,9 +36,9 @@ class RayBCEnv(MultiAgentEnv):
         raw_states, done = self.external_env.step(action_dict)
 
         # feature embedding
-        states = self.env_wrapper.state_wrapper(raw_states)
+        states = self.env_wrapper.states_wrapper(raw_states)
         rewards = self.env_wrapper.reward_wrapper(raw_states)
-        infos = self.env_wrapper.info_wrapper(raw_states)
+        infos = self.env_wrapper.infos_wrapper(raw_states)
         dones = {"__all__": done}
         truncated = {"__all__": done}
 

@@ -46,6 +46,8 @@ class BaseEnv():
         self.total_agent = 6 # total game agent
         self.game_pid = None # game client pid
         self.step_cnt = 0 # game step count
+        self.ep_step_cnt = 0 # episode step count, different from step_cnt
+        self.ep_cnt = 0 # episode count
 
         # detect if a virtual desktop is being used
         if self.env_setting == 'linux':
@@ -102,16 +104,34 @@ class BaseEnv():
             raise Exception("Game client did not respond")
 
         # 3. get game done info
-        done = self._get_done(states)
+        truncated, done = self._get_done(states)
 
         self.step_cnt += 1
+        self.ep_step_cnt += 1
         self.last_step_time = time.time()
-        return states, done
+        return states, truncated, done
+    
+    def _get_agent_truncated(self, state_infos):
+        """get agent truncated info
+        """
+        agent_truncated = False
+        for key in state_infos.keys():
+            infos = state_infos[key][0]
+            if infos.get('end_values', None) is not None:
+                if len(infos['end_values']) > 0:
+                    agent_truncated = True
+        return agent_truncated
     
     def _get_done(self, states):
         """get game done info
         """
         done = False
+        truncated = False
+        agent_truncated = self._get_agent_truncated(states)
+        if agent_truncated and self.ep_step_cnt >= 5: # avoid send end_values many times
+            self.ep_step_cnt = 0
+            self.ep_cnt += 1
+            truncated = True
 
         # done via step cnt
         if self.step_cnt >= self.episode_horizon:
@@ -123,13 +143,13 @@ class BaseEnv():
             self.stream_data['done'] = True
             self._close_tcp_server()
 
-            return done
-
+            return truncated, done
+        
         # done via game time
         for key in states:
             if states[key][1]['global_state']['match_remain_time'] < 0.2:
+                truncated = True
                 done = True
-
                 # close game client
                 self._close_client()
 
@@ -139,7 +159,7 @@ class BaseEnv():
 
                 break
 
-        return done
+        return truncated, done
 
     # ===================================================
     #   Game Client Script

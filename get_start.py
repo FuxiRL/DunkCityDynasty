@@ -9,9 +9,8 @@ class RandomAgent():
     def __init__(self):
         pass
 
-    def act(self, states):
-        action_masks = {key: np.argwhere(states[key][-52:] == 1.).flatten() for key in states}
-        return {key: random.choices(action_masks[key].tolist(), k=1)[0] for key in action_masks}
+    def get_actions(self, states):
+        return {key: np.random.randint(0, 8) for key in states}
 
 
 def main():
@@ -63,9 +62,9 @@ def main():
 
     states, infos = env.reset()
     while True:
-        action = agent.act(states)
-        states, rewards, dones, truncated, infos = env.step(action)
-        print(action)
+        actions = agent.get_actions(states)
+        states, rewards, dones, truncated, infos = env.step(actions)
+        print(actions)
         if dones['__all__']:
             break
 
