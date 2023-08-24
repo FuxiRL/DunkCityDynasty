@@ -11,7 +11,7 @@ A typical submission will be a **zip** file consisting of following files:
 For the `submission.py` file, the content should be like this:
 
 ```python
-class CustomAgent:
+class CustomedAgent:
     ''' Custom agent class, note that the class name must be "CustomAgent",
     '''
     def act(self,state_infos):
