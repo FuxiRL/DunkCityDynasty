@@ -78,7 +78,7 @@ class Model(nn.Module):
         self.share_layer_dim = self.global_state_layer_dim + self.agent_state_layer_dim * 6
         self.share_layer = nn.Sequential(nn.Linear(self.share_layer_dim, 256), nn.ReLU(), nn.Linear(256, 128), nn.ReLU())
         self.value_layer = nn.Sequential(nn.Linear(128, 1))
-        self.action_layer = nn.Sequential(nn.Linear(128, 52), nn.ReLU())
+        self.action_layer = nn.Sequential(nn.Linear(128, 52))
         self.opt = optim.Adam(self.parameters(), lr=1e-3)
 
     def forward(self, states):
