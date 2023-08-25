@@ -53,6 +53,47 @@ class Policy(nn.Module):
     def save_model(self, path, step):
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         torch.save(self.model.state_dict(), f"{path}/{step}")
+    def evaluate(self, states, actions):
+        value, probs = self.model(states)
+        dist = torch.distributions.Categorical(probs)
+        log_probs = dist.log_prob(actions.squeeze(dim=1))
+        entropys = dist.entropy()
+        return value, log_probs, entropys
+    def sgd_iter(self, states, actions, returns, old_log_probs):
+        batch_size = actions.shape[0]
+        mini_batch_size = 32
+        for _ in range(batch_size//mini_batch_size):
+            rand_ids = np.random.randint(0, batch_size, mini_batch_size)
+            yield [states[i][rand_ids,:] for i in range(8)], actions[rand_ids,:], returns[rand_ids,:], old_log_probs[rand_ids,:]
+    def update(self, stats_recorder=None):
+        states, next_states, actions, rewards, dones, old_log_probs = self.memory.sample()
+        old_log_probs = torch.cat(old_log_probs,dim=0).unsqueeze(dim=1)
+        if states is None: return
+        states = [torch.tensor(np.array(state),dtype=torch.float32) for state in states]
+        next_states = [torch.tensor(np.array(next_state),dtype=torch.float32) for next_state in next_states]
+        actions = torch.tensor(actions,dtype=torch.float32).unsqueeze(1)
+        rewards = torch.tensor(np.array(rewards),dtype=torch.float32)
+        dones = torch.tensor(np.array(dones),dtype=torch.float32)
+        returns = self._compute_returns(rewards, dones)
+        for _ in range(2):
+            for states, actions, returns, old_log_probs in self.sgd_iter(states, actions, returns, old_log_probs):
+                values, log_probs, entropys = self.evaluate(states, actions)
+                advantages = returns - values.detach()
+                ratio = torch.exp(log_probs.unsqueeze(dim=1) - old_log_probs.detach())
+                surr1 = ratio * advantages
+                surr2 = torch.clamp(ratio, 1 - 0.2, 1 + 0.2) * advantages
+                actor_loss = -torch.min(surr1, surr2).mean() - 0.01 * entropys.mean()
+                critic_loss = nn.MSELoss()(returns,values)
+                tot_loss = actor_loss + 0.5 * critic_loss
+                self.model.opt.zero_grad()
+                tot_loss.backward()
+                self.model.opt.step()
+                if stats_recorder is not None:
+                    self.update_step += 1
+                    stats_recorder.add_policy_loss(tot_loss.item(), self.update_step)
+                    stats_recorder.add_value_loss(critic_loss.item(),  self.update_step)
+                    if self.update_step % 100 == 0:
+                        self.save_model('./output/model', self.update_step)
 
 class Exp:
     def __init__(self, **kwargs) -> None:
