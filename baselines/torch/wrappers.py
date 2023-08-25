@@ -246,11 +246,11 @@ class BCWrapper():
         agent_states_list.append(agent_states_dict['v_delta_x']*0.3)
         agent_states_list.append(agent_states_dict['v_delta_z']*0.3)
         agent_states_list.append(agent_states_dict['player_to_me_dis_x']*0.2)
-        agent_states_list.append(agent_states_dict['player_to_me_dis_y']*0.2) # z
+        agent_states_list.append(agent_states_dict['player_to_me_dis_z']*0.2) # z
         agent_states_list.append(agent_states_dict['basket_to_me_dis_x']*0.2)
-        agent_states_list.append(agent_states_dict['basket_to_me_dis_y']*0.2)# z
+        agent_states_list.append(agent_states_dict['basket_to_me_dis_z']*0.2)# z
         agent_states_list.append(agent_states_dict['ball_to_me_dis_x']*0.2)
-        agent_states_list.append(agent_states_dict['ball_to_me_dis_y']*0.2)# z
+        agent_states_list.append(agent_states_dict['ball_to_me_dis_z']*0.2)# z
         agent_states_list.append(agent_states_dict['polar_to_me_angle']*0.3)
         agent_states_list.append(agent_states_dict['polar_to_me_r']*0.2)
         agent_states_list.append(agent_states_dict['polar_to_basket_angle']*0.3)
