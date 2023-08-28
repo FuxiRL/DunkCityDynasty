@@ -78,6 +78,6 @@ if __name__ == '__main__':
                 tb_writer.add_scalar('acc', acc, epoch)
             if epoch % 2000 == 0:
                 print(f"epoch:{epoch},loss:{loss},acc:{acc}")
-                policy.save_model(f"./output/model_{epoch}.pth")
+                policy.save_model(f"./output/bc_model")
         except:
             pass

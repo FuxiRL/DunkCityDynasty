@@ -42,8 +42,7 @@ class GymEnv(gym.Env):
         # feature embedding
         states, infos = self.env_wrapper.states_wrapper(state_infos)
         rewards = self.env_wrapper.rewards_wrapper(state_infos)
-        
-        truncated = {"__all__": truncated}
+
         dones = {"__all__": done}
 
         return states, rewards, dones, truncated, infos

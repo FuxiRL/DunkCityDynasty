@@ -114,25 +114,32 @@ class BaseEnv():
     def _get_agent_truncated(self, state_infos):
         """get agent truncated info
         """
-        agent_truncated = False
+        one_agent_truncated_flag = False
+        agent_truncated = {}
         for key in state_infos.keys():
             infos = state_infos[key][0]
             if infos.get('end_values', None) is not None:
                 if len(infos['end_values']) > 0:
-                    agent_truncated = True
-        return agent_truncated
+                    one_agent_truncated_flag = True
+                    agent_truncated[key] = True
+                else:
+                    agent_truncated[key] = False
+            else:
+                agent_truncated[key] = False
+        return one_agent_truncated_flag, agent_truncated
     
     def _get_done(self, states):
         """get game done info
         """
         done = False
-        truncated = False
-        agent_truncated = self._get_agent_truncated(states)
-        if agent_truncated and self.ep_step_cnt >= 5: # avoid send end_values many times
+        truncated = {"__all__": False}
+        one_agent_truncated_flag, agent_truncated = self._get_agent_truncated(states)
+        truncated.update(agent_truncated)
+        if one_agent_truncated_flag and self.ep_step_cnt >= 5: # avoid send end_values many times
             self.ep_step_cnt = 0
             self.ep_cnt += 1
-            truncated = True
-
+            truncated["__all__"] = True
+            
         # done via step cnt
         if self.step_cnt >= self.episode_horizon:
             done = True

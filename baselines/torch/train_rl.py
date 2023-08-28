@@ -18,7 +18,6 @@ class Policy(nn.Module):
         self.memory = Memory()
         self.model = Model().to('cpu')
         self.update_step = 0
-
     def sample_action(self, states):
         new_states = []
         for state in states:
@@ -181,13 +180,13 @@ def train(env, policy,stats_recorder=None):
                 ep_step = 0
                 ep_cnt += 1
                 stats_recorder.add_rewards(ep_rewards, ep_cnt)
-            share_keys = list(set(states.keys()) & set(next_states.keys()) & set(actions.keys()) & set(rewards.keys()) & set(dones.keys()))
+            share_keys = list(set(states.keys()) & set(next_states.keys()) & set(actions.keys()) & set(rewards.keys()) & set(truncated.keys()))
             for key in share_keys:
                 state = states[key]
                 next_state = next_states[key]
                 action = actions[key]
                 reward = rewards[key]
-                done = dones[key]
+                done = truncated[key]
                 truncat = truncated[key]
                 log_probs = policy.log_probs[key]
                 exp = Exp(state=state,next_state=next_state,action=action,reward=reward,done=done,log_probs=log_probs,truncated=truncat)
@@ -198,7 +197,6 @@ def train(env, policy,stats_recorder=None):
                 exps = []
             if dones['__all__']:
                 break
-
             states = next_states
 
 def test(env,policy):
