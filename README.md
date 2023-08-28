@@ -36,7 +36,7 @@ To install the Dunk City Dynasty Environment, simply follow these steps:
    git clone https://github.com/FuxiRL/DunkCityDynasty.git
    ```
 
-2. For non-Windows system users, in order to run the Dunk City Dynasty client, you will need to install wine and several other required components. This can be done either by using the `install.sh` script or by utilizing `docker`. Here are the relevant commands:
+2. For Linux system users (MacOS not supported currently), in order to run the Dunk City Dynasty client, you will need to install wine and several other required components. This can be done either by using the `install.sh` script or by utilizing `docker`. Here are the relevant commands:
 
    ```sh
    # (Only for Ubuntu System) Install components
@@ -86,12 +86,17 @@ while True:
         break
 ```
 
-or, directly run the `get_start.py` file
+or, directly run the `get_start.py` file: 
 
 ```sh
-# need to perform the relevant configuration in the get_start section first!!!
 python get_start.py
 ```
+
+Please note that the following parameters need to be configured in the `get_start.py` file:
+
+* `client_path`: the path of the game client
+* `game_server_ip`: the IP address of the game server (given by the organizer)
+* `user_name`:  the user name of the game account (given by the organizer)
 
 The Dunk City Dynasty Environment currently supports both Windows and Linux systems. On Linux systems, the environments can be launched through Wine. In addition, the Dunk City Dynasty Environment supports multi-machine mode, where Linux is used for training and Windows for environment rollout, for example. To use the multi-machine mode, follow these steps:
 
