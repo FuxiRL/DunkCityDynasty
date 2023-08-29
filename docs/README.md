@@ -115,7 +115,7 @@ The Dunk City Dynasty Environment currently supports both Windows and Linux syst
 
 ### An easy training demo
 
-Currently, we provide a simple training code based on the [rllib framework](https://www.ray.io/rllib). You can try to train the agent by running the following code.
+Currently, we provide a simple training code. You can try to train the agent by running the following code.
 
 RL training:
 
