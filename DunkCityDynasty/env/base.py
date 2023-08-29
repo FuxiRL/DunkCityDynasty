@@ -139,7 +139,7 @@ class BaseEnv():
             self.ep_step_cnt = 0
             self.ep_cnt += 1
             truncated["__all__"] = True
-            
+
         # done via step cnt
         if self.step_cnt >= self.episode_horizon:
             done = True
@@ -155,7 +155,7 @@ class BaseEnv():
         # done via game time
         for key in states:
             if states[key][1]['global_state']['match_remain_time'] < 0.2:
-                truncated = True
+                truncated["__all__"] = True
                 done = True
                 # close game client
                 self._close_client()
