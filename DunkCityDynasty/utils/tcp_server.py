@@ -100,3 +100,8 @@ class CustomedThreadingTCPServer(socketserver.ThreadingMixIn, socketserver.TCPSe
         """Finish one request by instantiating RequestHandlerClass
         """
         self.rhc = self.RequestHandlerClass(request, client_address, self, self.stream_data)
+        
+    def server_close(self):
+        super().server_close()
+        for thread in self._threads.pop_all():
+            thread.join(timeout=2) # avoid deadlock

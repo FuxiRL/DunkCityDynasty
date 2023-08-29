@@ -28,9 +28,9 @@ class GymEnv(gym.Env):
         self.observation_space = self.env_wrapper.observation_space
         self.action_space = self.env_wrapper.action_space
 
-    def reset(self):
+    def reset(self, user_name = None):
         # env reset
-        state_infos = self.external_env.reset()
+        state_infos = self.external_env.reset(user_name)
         # feature embedding
         states, infos = self.env_wrapper.states_wrapper(state_infos)
         return states, infos
