@@ -50,7 +50,7 @@ class Policy(nn.Module):
         returns = (returns - returns.mean()) / (returns.std() + 1e-9)
         return returns
     def save_model(self, path, step):
-        Path(path).parent.mkdir(parents=True, exist_ok=True)
+        Path(path).mkdir(parents=True, exist_ok=True)
         torch.save(self.model.state_dict(), f"{path}/{step}")
     def evaluate(self, states, actions):
         value, probs = self.model(states)
