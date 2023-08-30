@@ -103,5 +103,8 @@ class CustomedThreadingTCPServer(socketserver.ThreadingMixIn, socketserver.TCPSe
         
     def server_close(self):
         super().server_close()
-        for thread in self._threads.pop_all():
-            thread.join(timeout=2) # avoid deadlock
+        try: # avoid _NoThreads error
+            for thread in self._threads.pop_all():
+                thread.join(timeout=2) # avoid deadlock
+        except:
+            pass

@@ -8,3 +8,4 @@ train_tools
 ray_results
 .vscode
 output
+test.py

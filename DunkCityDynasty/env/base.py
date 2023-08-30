@@ -2,6 +2,7 @@ import os
 import re
 import time
 import grpc
+import psutil
 import threading
 import subprocess
 import socketserver
@@ -28,6 +29,8 @@ class BaseEnv():
         self.game_server_ip = config['game_server_ip']
         self.game_server_port = config['game_server_port']
         self.user_name = config['user_name']
+        self.pid = -1 # game client pid
+        self.last_states = None # last states
 
         if self.env_setting == 'linux':
             if 'xvfb_display' not in config:
@@ -56,31 +59,23 @@ class BaseEnv():
             if os.environ.get('DISPLAY'):
                 self.use_xvfb = False
 
-    def reset(self):
+    def reset(self, user_name = None, render = True):
         """reset func
         """
-        # set stream data & start tcp server
-        self.stream_data = {
-            i: {
-                'state': None,
-                'action': 0. # set default action
-            }
-            for i in range(self.total_agent)
-        }
-        self.stream_data['done'] = False
-        self._start_tcp_server()
+        # reset user name
+        if user_name is not None: self.user_name = user_name
 
-        # start game client
-        self.game_pid = self._start_client()
-        # get state        
-        states = self._wait_for_state(min_player=3)
+        # render
+        self._render(render)    
 
-        # If the game does not respond for a long time, restart the game
-        while states is None:
-            self._close_client()
-            time.sleep(1)
-            self.game_pid = self._start_client()
+        # keep restarting the game until success.
+        while True:
+            self._start_all()
             states = self._wait_for_state(min_player=3)
+            if states is not None: # success
+                break
+            self._close_all()
+            time.sleep(1)
 
         # hyperparameter reset
         self.step_cnt = 0
@@ -101,7 +96,8 @@ class BaseEnv():
         # 2. get new state from client 
         states = self._wait_for_state(min_player=3)
         if states is None:
-            raise Exception("Game client did not respond")
+            truncated, done = self._get_done(self.last_states)
+            return self.last_states, truncated, True
 
         # 3. get game done info
         truncated, done = self._get_done(states)
@@ -111,6 +107,17 @@ class BaseEnv():
         self.last_step_time = time.time()
         return states, truncated, done
     
+    def _render(self, render):
+        config_file = f"{self.client_path}/Lx33_Data/boot.config"
+        with open(config_file, 'r') as f:
+            lines = f.readlines()
+        if not render:
+            lines[-1] = lines[-1].replace('0', '1')
+        else:
+            lines[-1] = lines[-1].replace('1', '0')
+        with open(config_file, 'w') as f:
+            f.writelines(lines)
+
     def _get_agent_truncated(self, state_infos):
         """get agent truncated info
         """
@@ -143,12 +150,8 @@ class BaseEnv():
         # done via step cnt
         if self.step_cnt >= self.episode_horizon:
             done = True
-            # close game client
-            self._close_client()
-
-            # stop tcp server
-            self.stream_data['done'] = True
-            self._close_tcp_server()
+            # close game client and tcp server
+            self._close_all()
 
             return truncated, done
         
@@ -157,12 +160,8 @@ class BaseEnv():
             if states[key][1]['global_state']['match_remain_time'] < 0.2:
                 truncated["__all__"] = True
                 done = True
-                # close game client
-                self._close_client()
-
-                # stop tcp server
-                self.stream_data['done'] = True
-                self._close_tcp_server()
+                # close game client and tcp server
+                self._close_all()
 
                 break
 
@@ -178,7 +177,7 @@ class BaseEnv():
             # run game client 
             cmd = f"{self.client_path}/Lx33.exe {self.game_server_ip} {self.game_server_port} {self.rl_server_ip} {self.rl_server_port} {self.user_name}"
             p = subprocess.Popen(cmd, shell=False)
-            pids = [p.pid]
+            self.pid = p.pid
 
         elif self.env_setting == 'linux':
             # run game client
@@ -190,13 +189,12 @@ class BaseEnv():
 
             # get game client pid
             ps_lines = os.popen('ps -ef |grep Lx33.exe').readlines()
-            pids = []
             for ps_line in ps_lines:
                 if f'{self.rl_server_ip} {self.rl_server_port}' in ps_line:
                     temp = re.sub(' +', ' ', ps_line).split(' ')
                     if len(temp) > 1:
-                        pids.append(int(temp[1]))
-
+                        self.pid = int(temp[1])
+            
         elif self.env_setting == 'multi_machine':
             with grpc.insecure_channel(f'{self.machine_server_ip}:{self.machine_server_port}') as channel:
                 stub = machine_comm_pb2_grpc.ClientCommStub(channel)
@@ -207,25 +205,41 @@ class BaseEnv():
                     rl_server_port=self.rl_server_port,
                     user_name=self.user_name,
                 ))
-            if resp.msg == 'ok':
-                pids = [-1]
-            else:
-                raise Exception('error!!')
-            
-        return pids
+    
+    def _start_all(self):
+        ''' set stream data & start tcp server & start game client
+        '''
+        # set stream data
+        self.stream_data = {
+            i: {
+                'state': None,
+                'action': 0. # set default action
+            }
+            for i in range(self.total_agent)
+        }
+        self.stream_data['done'] = False
+        # start tcp server
+        self._start_tcp_server()
+        # start game client
+        self.game_pid = self._start_client()
+
+    def _close_all(self):
+        '''close game client and tcp server
+        '''
+        self._close_client()
+        self.stream_data['done'] = True
+        self._close_tcp_server()
 
     def _close_client(self):
         """close game client
         """
         if self.env_setting == 'win':
-            for pid in self.game_pid:
-                cmd = f"taskkill /F /PID {pid}"
-                subprocess.call(cmd, shell=False)
+            cmd = f"taskkill /F /PID {self.pid}"
+            subprocess.call(cmd, shell=False)
         
         elif self.env_setting == 'linux':
-            for pid in self.game_pid:
-                cmd = f"kill -9 {pid}"
-                os.system(cmd)
+            cmd = f"kill -9 {self.pid}"
+            os.system(cmd)
         
         elif self.env_setting == 'multi_machine':
             with grpc.insecure_channel(f'{self.machine_server_ip}:{self.machine_server_port}') as channel:
@@ -236,8 +250,8 @@ class BaseEnv():
                     rl_server_ip=self.rl_server_ip,
                     rl_server_port=self.rl_server_port,
                 ))
-            if resp.msg != 'ok':
-                raise Exception('error!!')
+            # if resp.msg != 'ok':
+            #     raise Exception('error!!')
 
     def _start_virtual_desktop(self):
         """start virtual desktop
@@ -269,26 +283,47 @@ class BaseEnv():
         self.tcp_server.shutdown()
         self.tcp_server.server_close()
 
-    def _wait_for_state(self, min_player=0, max_wait_count=60):
+    def _wait_for_state(self, min_player=0, timeout=60):
         """wait the fixed time to accept env state
         """
         states = {}
-        wait_count = 0
+        wait_cnt = 0
         while True:
             for i in range(self.total_agent):
                 if self.stream_data[i]['state']:
                     states[i] = self.stream_data[i]['state']
                     self.stream_data[i]['state'] = None
             if len(states) > min_player:
+                self.last_states = states
                 return states
 
             # sleep
             sleep(0.001)
-
-            # timeout detection.
-            wait_count += 0.001
-            if wait_count > max_wait_count:
+            wait_cnt += 0.001
+            if not self._check_client() or wait_cnt > timeout: # game client is closed or timeout
+                self._close_client()
+                self.stream_data['done'] = True
+                self._close_tcp_server()
                 return None
+            
+    def _check_client(self):
+        ''' check if game client is running
+        '''
+        if self.env_setting == 'win' or self.env_setting == 'linux':
+            return psutil.pid_exists(self.pid)
+        elif self.env_setting == 'multi_machine':
+            with grpc.insecure_channel(f'{self.machine_server_ip}:{self.machine_server_port}') as channel:
+                stub = machine_comm_pb2_grpc.ClientCommStub(channel)
+                resp = stub.Cmd(machine_comm_pb2.ClientCmd(
+                    client_id=self.id,
+                    cmd='check_client',
+                    rl_server_ip=self.rl_server_ip,
+                    rl_server_port=self.rl_server_port,
+                ))
+            if resp.msg == 'ok':
+                return True
+            else:
+                return False
 
     def _set_action(self, action_dict):
         """set action to tcp server

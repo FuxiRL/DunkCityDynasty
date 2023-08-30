@@ -62,8 +62,8 @@ def main():
 
     env = GymEnv(config)
     agent = RandomAgent()
-
-    states, infos = env.reset()
+    user_name = "xxxxx"
+    states, infos = env.reset(user_name = user_name, render = True)
     while True:
         actions = agent.get_actions(states)
         states, rewards, dones, truncated, infos = env.step(actions)

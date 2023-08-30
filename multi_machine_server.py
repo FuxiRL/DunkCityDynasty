@@ -1,4 +1,5 @@
 import grpc
+import psutil
 import subprocess
 from concurrent import futures
 
@@ -24,7 +25,7 @@ class ClientCom(machine_comm_pb2_grpc.ClientCommServicer):
         user_name = request.user_name
 
         if cmd == 'start_client':
-            pid = self._start_client(rl_server_ip, rl_server_port)
+            pid = self._start_client(rl_server_ip, rl_server_port, user_name)
             CLIENT_PID_DICT[client_id] = pid
             return machine_comm_pb2.Reply(msg='ok')
         
@@ -35,12 +36,19 @@ class ClientCom(machine_comm_pb2_grpc.ClientCommServicer):
                 return machine_comm_pb2.Reply(msg='ok')
             else:
                 return machine_comm_pb2.Reply(msg='no client')
+            
+        elif cmd == "check_client":
+            client_pid = CLIENT_PID_DICT.get(client_id, -1)
+            if client_id in CLIENT_PID_DICT and psutil.pid_exists(client_pid):
+                return machine_comm_pb2.Reply(msg='ok')
+            else:
+                return machine_comm_pb2.Reply(msg='no client')
 
-    def _start_client(self, rl_server_ip, rl_server_port):
+    def _start_client(self, rl_server_ip, rl_server_port, user_name):
         """start game client
         """
         # run game client 
-        cmd = f'{CLIENT_PATH}/Lx33.exe {GAME_SERVER_IP} {GAME_SERVER_PORT} {rl_server_ip} {rl_server_port}'
+        cmd = f'{CLIENT_PATH}/Lx33.exe {GAME_SERVER_IP} {GAME_SERVER_PORT} {rl_server_ip} {rl_server_port} {user_name}'
         p = subprocess.Popen(cmd, shell=False)
         return p.pid
 
