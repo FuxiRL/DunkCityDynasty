@@ -232,7 +232,7 @@ class Policy(nn.Module):
         return actions
 
     def load_model(self, path):
-        self.model.load_state_dict(torch.load(path))
+        self.model.load_state_dict(torch.load(path, map_location=torch.device('cpu')))
 
 class CustomedAgent():
     def __init__(self):

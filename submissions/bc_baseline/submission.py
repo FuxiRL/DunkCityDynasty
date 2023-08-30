@@ -260,7 +260,7 @@ class Policy(nn.Module):
         return actions
 
     def load_model(self, path):
-        self.model.load_state_dict(torch.load(path))
+        self.model.load_state_dict(torch.load(path, map_location=torch.device('cpu')))
 
 class CustomedAgent():
     def __init__(self):
@@ -279,4 +279,8 @@ class CustomedAgent():
         return actions
 
 if __name__ == '__main__':
+    import json
     agent = CustomedAgent()
+    with open('states.json', 'r') as f:
+        state_infos = json.load(f)
+    print(agent.act(state_infos))
