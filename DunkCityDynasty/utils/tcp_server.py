@@ -81,8 +81,15 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         finally:
             print("stop tcp server: " + threading.currentThread().name)
 
-
-class CustomedThreadingTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+class CustomedThreadingMixIn(socketserver.ThreadingMixIn):
+    def server_close(self):
+        super().server_close()
+        try: # avoid _NoThreads error
+            for thread in self._threads.pop_all():
+                thread.join(timeout=2) # avoid deadlock
+        except:
+            pass
+class CustomedThreadingTCPServer(CustomedThreadingMixIn, socketserver.TCPServer):
     """TCP Service for  Dunk City Dynasty game client 
 
     [V1.0] Shared memory version
@@ -101,10 +108,3 @@ class CustomedThreadingTCPServer(socketserver.ThreadingMixIn, socketserver.TCPSe
         """
         self.rhc = self.RequestHandlerClass(request, client_address, self, self.stream_data)
         
-    def server_close(self):
-        super().server_close()
-        try: # avoid _NoThreads error
-            for thread in self._threads.pop_all():
-                thread.join(timeout=2) # avoid deadlock
-        except:
-            pass
