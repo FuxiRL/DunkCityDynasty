@@ -134,7 +134,7 @@ The more in-depth information of `global_state` and agent states (including `sel
 |      team_own_ball      |         Whether our  team has possession of the ball         |                     $1$: yes<br/>$0$: no                     |
 |   enemy_team_own_ball   |       Whether enemy  team has possession of the ball,        |                     $1$: yes<br/>$0$: no                     |
 |       ball_clear        |        Whether the  ball crosses the three-point line        |                     $1$: yes<br/>$0$: no                     |
-|       ball_status       |                       Status of  ball                        | $0$:None <br/>$1$:Manual<br/>$2$:Physics<br/>$3$:Shoot<br/>$4$:Owned<br/>$5$:Pass |
+|       ball_status       |                       Status of  ball                        | $0$:None <br/>$1$:Manual: occur at jumping ball<br/>$2$:Physics: ball free<br/>$3$:Shoot: in the way of shooting<br/>$4$:Owned: ball owned<br/>$5$:Pass: in the way of passing |
 |       can_rebound       |              Whether  the ball can be rebounded              |                     $1$: yes<br/>$0$: no                     |
 |  dis_to_rebound_x(z,y)  |    Cartesian  distance between the player and the rebound    |                                                              |
 |        can_block        |               Whether  the ball can be blocked               |                     $1$: yes<br/>$0$: no                     |
