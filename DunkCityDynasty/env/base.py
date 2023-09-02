@@ -226,7 +226,10 @@ class BaseEnv():
     def _close_all(self):
         '''close game client and tcp server
         '''
-        self._close_client()
+        try: # avoid no game client error
+            self._close_client()
+        except:
+            pass
         self.stream_data['done'] = True
         self._close_tcp_server()
 
