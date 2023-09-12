@@ -5,7 +5,7 @@ Update at $\text{2023-09-11 16:38:00}$:
 
 Update at $\text{2023-09-02}$:
 
-* [client]: Integrated the user_name and render interface into the render function, as `env.render(user_name='xxxxxxx', render=True)`
+* [client]: Integrated the user_name and render interface into the reset function, as `env.reset(user_name='xxxxxxx', render=True)`
 
 Update at $\text{2023-08-30}$:
 * [client]: Fix tcp server deadlock error on linux
