@@ -144,7 +144,6 @@ python ./baselines/torch/train_bc.py
 ##### Game setting
 
 - Game screen scaling: `Alt+Enter`.
-- Turn off game rendering: set `disableGameRendering=1` in `./Lx33_Data/boot.config` 
 
 
 ## Appendix
