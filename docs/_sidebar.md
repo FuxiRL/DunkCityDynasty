@@ -1,3 +1,4 @@
 - [Introduction](/)
 - [Environment Info](/env_info.md)
 - [Competition Info](/comp_info.md)
+- [Updating Logs](/update_log.md)

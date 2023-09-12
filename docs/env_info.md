@@ -245,20 +245,56 @@ The state events are listed as following table:
 |    **long_pass**    | Long pass, which will cause the player to become stiff in the game |
 |    **pass_fail**    |                         Pass failed                          |
 
-
 ## End Values
+
+There are two forms of game termination in our environment: one is when one side scores or the attacking side times out, which we call a **trucation**; the other is when one side wins the entire game, which we call **done**. The former usually takes around 100 steps, while the latter takes longer. Therefore, for efficient training, we recommend using trucation as the signal for reinforcement learning instead of done.
+
+In addition, we provide some end values **for each trucation** to support more diverse training, as shown in the table below.
+
+| Index |   Feature Key    |                         Description                          |
+| :---: | :--------------: | :----------------------------------------------------------: |
+|   0   |        id        |                    Character id of player                    |
+|   1   |       win        | Whether player team win or not. Note that both win could get "win=0" when the attacking side times out |
+|   2   |      delta       |             Score delta, could be $0,\pm2,\pm3$              |
+|   3   |     is_home      |           Whether the player belongs to home team            |
+|   4   |  skill_type_cnt  |                Count of different skill used                 |
+|   5   |    skill_var     |    Variance of the number of skills used, cound be $NaN$     |
+|   6   |    my_tot_try    |                  Total shoot try of player                   |
+|   7   |  my_dazhao_cnt   |                Count of ultimate skill casted                |
+|   8   |   my_pass_cnt    |                  Total pass count of player                  |
+|   9   |  my_rebound_cnt  |               Total rebounding count of player               |
+|  10   |  my_screen_cnt   |                 Total screen count of player                 |
+|  11   |   my_block_cnt   |                Total blocking count of player                |
+|  12   |  my_blocked_cnt  |             Total being blocked count of player              |
+|  13   |   my_steal_cnt   |                Total stealing count of player                |
+|  14   |  my_stolen_cnt   |              Total being stolen count of player              |
+|  15   |  my_pickup_cnt   |                Total pick up count of player                 |
+|  16   |     my_score     |              Score of player, counld be $0,2,3$              |
+|  17   |    my_two_try    |                Total 2-pt shoot try of player                |
+|  18   |   my_three_try   |                Total 3-pt shoot try of player                |
+|  19   |    team_score    |                        Score of team                         |
+|  20   |   team_tot_try   |                   Total shoot try of team                    |
+|  21   |   team_two_try   |                 Total 2-pt shoot try of team                 |
+|  22   |  team_three_try  |                 Total 3-pt shoot try of team                 |
+|  23   |  team_block_cnt  |                 Total blocking count of team                 |
+|  24   | team_rebound_cnt |                Total rebounding count of team                |
+|  25   |  team_steal_cnt  |                 Total stealing count of team                 |
+|  26   | team_screen_cnt  |                  Total screen count of team                  |
+
+
+
 ## Action
 
 In our environment, a total of 52 actions are reserved, of which 12 actions are common actions for all players as shown in the table below. The remainder are skill infos for each player, and the types and numbers of these skills vary, which can be referred in `Skill Info` of `Players` part.
 
-| Action Index | Description | Action Index |     Description     |
-| :----------: | :---------: | :----------: | :-----------------: |
-|      0       |    Noop     |      6       |      Move: 45       |
-|      1       |  Move: 90   |      7       |      Move: 225      |
-|      2       |  Move: 270  |      8       |      Move: 315      |
-|      3       |  Move: 180  |      9       |    Cancel Skill     |
-|      4       |   Move: 0   |      10      | Pass Ball to Ally 1 |
-|      5       |  Move: 135  |      11      | Pass Ball to Ally 2 |
+| Index | Description | Index |     Description     |
+| :---: | :---------: | :---: | :-----------------: |
+|   0   |    Noop     |   6   |      Move: 45       |
+|   1   |  Move: 90   |   7   |      Move: 225      |
+|   2   |  Move: 270  |   8   |      Move: 315      |
+|   3   |  Move: 180  |   9   |    Cancel Skill     |
+|   4   |   Move: 0   |  10   | Pass Ball to Ally 1 |
+|   5   |  Move: 135  |  11   | Pass Ball to Ally 2 |
 
 ## Players
 
@@ -295,15 +331,14 @@ In our environment, a total of 52 actions are reserved, of which 12 actions are 
 
 | Index |      Description       | Index |      Description       | Index | Description |
 | ------------ | :--------------------: | :----------: | :--------------------: | :--------------------: | :--------------------: |
-|      12      |      Drive  Left       |      21      |       Jump Ball        |       30       |       Post King(2Pt Right)       |
-|      13      |      Drive Right       |      22      |  Two-handed Slam Dunk  |    31   | 3Pt King(3Pt Left) |
-|      14      |     Call For Ball      |      23      |    Forceful Passing    |      32     | 3Pt King(3Pt Right) |
-|      15      |         Screen         |      24      | Tank Turnaround(Right) |     33     |     Tank Dunk(Far)     |
-|      16      |        Defense         |      25      |       Full Block       |  34 | Turnaround Charge |
-|      17      |        Rebound         |      26      |    Focus-3-Pointer     |  35  |  One-Handed Dunk  |
-|      18      |         Steal          |      27      |      Tank Charge       |   36   |   Turnaround Fadeaway   |
-|      19      |         Cover          |      28      |     Drive Fadeaway     |     |     |
-|      20      |       Accelerate       |      29      |  Post King(2Pt Left)   |          |          |
+|      12      |      Drive  Left       |  20   | Running alley-oop pass |  28   |   Tiger Instinct    |
+|      13      |      Drive Right       |  21   |       Jump Ball        |  29   |  Double Pump Dunk   |
+|      14      |     Call For Ball      |  22   |      Soaring Dunk      |  30   | Catch & Turn(Left)  |
+|      15      |         Screen         |  23   |        Chip Out        |  31   | Catch & Turn(Right) |
+|      16      |        Defense         |  24   |    Ferocious Steal     |  32   |   Alley-oop Pass    |
+|      17      |         Rebound   |  25   |       Quick Dunk       | 33 | Rim Rattler |
+|      18      |       Cover       |  26   |     Run onto ball      |          |          |
+| 19 | Accelerate | 27 | Leapstep Block | | |
 
 ### James
 
