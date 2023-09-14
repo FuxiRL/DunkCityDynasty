@@ -43,7 +43,7 @@ class Policy(nn.Module):
         weights = [0.1] + [0.2] * 8 + [1.2] * 43
         weights = torch.tensor(weights,dtype=torch.float32)
         actions = torch.tensor(actions,dtype=torch.long).unsqueeze(1)
-        value, logit_p = self.model(states)
+        logit_p = self.model(states)
         predict_actions = logit_p.argmax(dim=1)
         acc = (predict_actions == actions.squeeze(dim=1)).sum().item() / len(actions)
         loss = F.cross_entropy(logit_p, actions.squeeze(dim=1), weight = weights)

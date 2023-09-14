@@ -2,6 +2,13 @@ import jsonlines
 import random
 import numpy as np
 from glob import glob
+from huggingface_hub import hf_hub_download
+
+def download_human_data(download_path):
+    for filename in [f"DATA_RELEASE_{i}.zip" for i in range(10)]:
+        hf_hub_download(repo_id="FUXI/DunkCityDynasty_Dataset", filename=filename, local_dir=download_path, repo_type="dataset")
+    hf_hub_download(repo_id="FUXI/DunkCityDynasty_Dataset", filename="README.md", local_dir=download_path, repo_type="dataset")
+
 
 def get_file_names(dir_path):
     '''get all file names in the dir_path'''

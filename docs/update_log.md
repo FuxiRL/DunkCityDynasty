@@ -1,3 +1,7 @@
+Update at $\text{2023-09-14}$:
+
+* [codes]: Add another BC baseline, see `baselines/torch/train_bc_2.py`
+* 
 Update at $\text{2023-09-11 16:38:00}$:
 * [docs]: Fix skill description of player Zion
 * [docs]: Add description of end values

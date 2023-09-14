@@ -4,7 +4,7 @@
 
 This repository contains an RL environment based on a commercial online basketball game named [Dunk City Dynasty](https://www.dunkcitymobile.com/). It was created by the [Netease Leihuo Technology](https://leihuo.163.com/) and the [Netease FuXi AI lab](https://fuxi.163.com/) for research purposes.
 
-<img src="./assets/game_pic.jpg" style="zoom:60%;" />
+<img src="https://github.com/FuxiRL/DunkCityDynasty/blob/main/assets/game_pic.jpg" style="zoom:60%;" />
 
 ## Content
 
@@ -15,7 +15,7 @@ This repository contains an RL environment based on a commercial online basketba
 
 ## Overview
 
-| ![](./assets/dcd-3p-shot.png) | ![](./assets/dcd-block.png) |
+| [![](./assets/dcd-3p-shot.png)](https://github.com/FuxiRL/DunkCityDynasty/blob/main/assets/dcd-3p-shot.png) | [![](./assets/dcd-block.png)](https://github.com/FuxiRL/DunkCityDynasty/blob/main/assets/dcd-block.png) |
 | ----------------------------- | --------------------------- |
 
 Dunk City Dynasty is an exciting new multiplayer online basketball game developed by NetEase Games. In this game, players can select their favorite characters to compete in thrilling 3v3 street basketball matches. The game features an impressive roster of player-controlled characters, including popular stars from the National Basketball Association (NBA) like LeBron James, Kevin Durant, Stephen Curry, and many more, each with unique abilities and skills. To succeed in matches and climb the rankings, players must utilize their skills and strategies. For additional information about the game, please visit the official website at ([China Server](https://qmx.163.com/), [Filipino server](https://www.dunkcitymobile.com/)).
@@ -56,6 +56,7 @@ To install the Dunk City Dynasty Environment, simply follow these steps:
    conda activate dunk_city_dynasty
    
    pip install -r requirements.txt
+   # pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
    ```
 
 ### Get start
