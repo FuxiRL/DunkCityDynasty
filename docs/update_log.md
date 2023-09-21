@@ -1,3 +1,5 @@
+Update at $\text{2023-09-21}$:
+* [docs]: Add description of the `player_state` and `skill_state`
 Update at $\text{2023-09-14}$:
 * [codes]: Add another BC baseline, see `baselines/torch/train_bc_2.py`
 

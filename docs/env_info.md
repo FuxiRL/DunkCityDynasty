@@ -173,8 +173,31 @@ The more in-depth information of `global_state` and agent states (including `sel
 |   is_marking_opponent    |                                                              |                                                    |
 |     is_team_own_ball     |                                                              |                                                    |
 |      inside_defence      |                                                              |                                                    |
-|       player_state       |                                                              |                                                    |
-|       skill_state        |                                                              |                                                    |
+|       player_state       |                        Player status                         |                        0-5                         |
+|       skill_state        |             Current action type casted by player             |                        0-26                        |
+
+`player_state`:
+
+* `0`: None
+* `1`: Default, standing or off-the-ball movement
+* `2`: Hold, hold the ball
+* `3`: Dribble, dribbling
+* `4`: Castskill, casting skill
+* `5`: Interrupt, stiff or controlled
+
+`skill_state`:
+
+| Index |  Description  | Index |   Description    | Index |         Description         |
+| :---: | :-----------: | :---: | :--------------: | :---: | :-------------------------: |
+|   0   |     None      |   9   |     Post up      |  18   |        Post up cross        |
+|   1   | Common action |  10   |     Rebound      |  19   |       Collision stop        |
+|   2   |     Block     |  11   |   Receive ball   |  20   |      Diving catch ball      |
+|   3   |    Boxout     |  12   |      Screen      |  21   |         Rude boxout         |
+|   4   | Call for ball |  13   |      Shoot       |  22   |          Chip out           |
+|   5   |  Cross over   |  14   |      Steal       |  23   |          Dash dunk          |
+|   6   |    Defence    |  15   |  Instant action  |  24   |         Jump block          |
+|   7   |     Pass      |  16   | Steal forward cd |  25   |    Forced to stop action    |
+|   8   |    Pick up    |  17   |  Quick defense   |  26   | Cut mechanism switch action |
 
 ## Reward Event
 
