@@ -1,5 +1,7 @@
 torch==1.11.0
 numpy==1.22.4
+ray==2.3.0
+ray[rllib]==2.3.0
 docker==5.0.3
 msgpack==1.0.5
 msgpack_numpy==0.4.8

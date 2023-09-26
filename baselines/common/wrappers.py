@@ -1,11 +1,13 @@
 import numpy as np
-from utils import onehot
+import gymnasium as gym
+from baselines.common.utils import onehot
 
 class RLWrapper:
     def __init__(self, config):
         self.config = config
-        self.observation_space = None
-        self.action_space = None
+        self.observation_space = gym.spaces.Box(low=-np.inf, high=np.inf, shape=(520,), dtype=np.float32)
+        self.action_space = gym.spaces.Discrete(52)
+        self.concated_states = config.get("concated_states", False)
     def states_wrapper(self, state_infos):
         states, infos = {}, {}
         for key in state_infos.keys():
@@ -20,6 +22,8 @@ class RLWrapper:
             enemy2_state = self.handle_agent_states(states_dict['enemy_2_state'])
             action_mask = np.array(state_infos[key][-1])
             observations = [global_state, self_state, ally0_state, ally1_state, enemy0_state, enemy1_state, enemy2_state, action_mask]
+            if self.concated_states:
+                observations = np.concatenate(observations)
             states[key] = observations
         return states,infos
     
