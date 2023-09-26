@@ -109,5 +109,5 @@ class Model(nn.Module):
             mask_logits_p = logits_p * action_mask + (1 - action_mask) * large_negative
             probs = nn.functional.softmax(mask_logits_p, dim=1)
             return value.float(), probs.float()
-        else: # for bc training
-            return logits_p.float()
+        else:
+            return value.float(), logits_p.float()

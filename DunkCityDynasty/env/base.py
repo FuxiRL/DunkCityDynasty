@@ -31,7 +31,7 @@ class BaseEnv():
         self.user_name = config['user_name']
         self.pid = -1 # game client pid
         self.last_states = None # last states
-
+        self.stream_data = {}
         if self.env_setting == 'linux':
             if 'xvfb_display' not in config:
                 self.xvfb_display = 5
@@ -41,9 +41,6 @@ class BaseEnv():
         if self.env_setting =='multi_machine':
             self.machine_server_ip = config['machine_server_ip']
             self.machine_server_port = config['machine_server_port']
-
-        # training config
-        self.episode_horizon = config['episode_horizon']
 
         # env hyperparameter
         self.total_agent = 6 # total game agent
@@ -69,6 +66,7 @@ class BaseEnv():
         self._render(render)    
 
         # keep restarting the game until success.
+        
         while True:
             self._start_all()
             states = self._wait_for_state(min_player=3)
@@ -147,14 +145,6 @@ class BaseEnv():
             self.ep_cnt += 1
             truncated["__all__"] = True
 
-        # done via step cnt
-        if self.step_cnt >= self.episode_horizon:
-            done = True
-            # close game client and tcp server
-            self._close_all()
-
-            return truncated, done
-        
         # done via game time
         for key in states:
             if states[key][1]['global_state']['match_remain_time'] < 0.2:
@@ -209,6 +199,8 @@ class BaseEnv():
     def _start_all(self):
         ''' set stream data & start tcp server & start game client
         '''
+        self._close_all()
+        time.sleep(self.id*5) # avoid start game clients at the same time
         # set stream data
         self.stream_data = {
             i: {
@@ -226,36 +218,35 @@ class BaseEnv():
     def _close_all(self):
         '''close game client and tcp server
         '''
-        try: # avoid no game client error
-            self._close_client()
-        except:
-            pass
+        self._close_client()
         self.stream_data['done'] = True
         self._close_tcp_server()
 
     def _close_client(self):
         """close game client
         """
-        if self.env_setting == 'win':
-            cmd = f"taskkill /F /PID {self.pid}"
-            subprocess.call(cmd, shell=False)
-        
-        elif self.env_setting == 'linux':
-            cmd = f"kill -9 {self.pid}"
-            os.system(cmd)
-        
-        elif self.env_setting == 'multi_machine':
-            with grpc.insecure_channel(f'{self.machine_server_ip}:{self.machine_server_port}') as channel:
-                stub = machine_comm_pb2_grpc.ClientCommStub(channel)
-                resp = stub.Cmd(machine_comm_pb2.ClientCmd(
-                    client_id=self.id,
-                    cmd='close_client',
-                    rl_server_ip=self.rl_server_ip,
-                    rl_server_port=self.rl_server_port,
-                ))
+        try:
+            if self.env_setting == 'win':
+                cmd = f"taskkill /F /PID {self.pid}"
+                subprocess.call(cmd, shell=False)
+            
+            elif self.env_setting == 'linux':
+                cmd = f"kill -9 {self.pid}"
+                os.system(cmd)
+            
+            elif self.env_setting == 'multi_machine':
+                with grpc.insecure_channel(f'{self.machine_server_ip}:{self.machine_server_port}') as channel:
+                    stub = machine_comm_pb2_grpc.ClientCommStub(channel)
+                    resp = stub.Cmd(machine_comm_pb2.ClientCmd(
+                        client_id=self.id,
+                        cmd='close_client',
+                        rl_server_ip=self.rl_server_ip,
+                        rl_server_port=self.rl_server_port,
+                    ))
             # if resp.msg != 'ok':
             #     raise Exception('error!!')
-
+        except:
+            pass
     def _start_virtual_desktop(self):
         """start virtual desktop
         """
@@ -283,8 +274,11 @@ class BaseEnv():
     def _close_tcp_server(self):
         """close tcp server
         """
-        self.tcp_server.shutdown()
-        self.tcp_server.server_close()
+        try:
+            self.tcp_server.shutdown()
+            self.tcp_server.server_close()
+        except:
+            pass
 
     def _wait_for_state(self, min_player=0, timeout=60):
         """wait the fixed time to accept env state

@@ -8,8 +8,8 @@ import numpy as np
 from collections import defaultdict
 from pathlib import Path
 from torch.utils.tensorboard import SummaryWriter 
-from model import Model
-from wrappers import RLWrapper
+from baselines.common.model import Model
+from baselines.common.wrappers import RLWrapper
 from DunkCityDynasty.env.gym_env import GymEnv
 
 class Policy(nn.Module):
@@ -143,7 +143,7 @@ class StatsRecorder:
         self.writters['policy'].add_scalar(tag=f'loss/value_loss', scalar_value = loss, global_step = ep_cnt)
 
 def create_env(id=1):
-    config = {
+    env_config = {
         'id': id,
         'env_setting': 'win',
         'client_path': 'game_package_release',
@@ -154,11 +154,10 @@ def create_env(id=1):
         'machine_server_ip': '',
         'machine_server_port': 0,
         "user_name": "username",
-        'episode_horizon': 100000,
         'render': True,
     }
     wrapper = RLWrapper({})
-    env = GymEnv(config, wrapper=wrapper)
+    env = GymEnv(env_config, wrapper=wrapper)
     return env
 
 def train(env, policy,stats_recorder=None):

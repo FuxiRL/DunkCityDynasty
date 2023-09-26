@@ -27,7 +27,6 @@ def main():
         'machine_server_ip': '',
         'machine_server_port': 0,
         'user_name': 'xxxx',
-        'episode_horizon': 100000
     }
 
     # --- linux env
@@ -42,7 +41,6 @@ def main():
     #     'machine_server_ip': '',
     #     'machine_server_port': 0,
     #     'user_name': 'xxxx',
-    #     'episode_horizon': 100000
     # }
 
     # # --- multi_machine
@@ -57,7 +55,6 @@ def main():
     #     'machine_server_ip': '10.219.204.76',
     #     'machine_server_port': 6667,
     #     'user_name': 'xxxx',
-    #     'episode_horizon': 100000
     # }
 
     env = GymEnv(config)

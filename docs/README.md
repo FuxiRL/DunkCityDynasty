@@ -74,7 +74,6 @@ config = {
     'machine_server_ip': '',                # ip of remote machineserver (for multi machine setting)
     'machine_server_port': 0,               # port of remote machineserver (for multi machine setting)
     'user_name': 'xxxxxxx',                 # user name of the game account
-    'episode_horizon': 100000               # max game steps
     }
 
 env = GymEnv(config)
