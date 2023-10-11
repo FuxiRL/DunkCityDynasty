@@ -56,6 +56,7 @@ To install the Dunk City Dynasty Environment, simply follow these steps:
    conda activate dunk_city_dynasty
    
    pip install -r requirements.txt
+   # imgage url
    # pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
    ```
 
@@ -129,7 +130,7 @@ python ./baselines/torch/train_rl.py
 BC training:
 
 ```sh
-python ./baselines/torch/train_bc.py
+python ./baselines/torch/train_bc_1.py
 ```
 
 ## QA

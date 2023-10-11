@@ -7,7 +7,7 @@ import torch
 from torch.utils.data import Dataset
 import torch.nn.utils.rnn as rnn_utils
 import numpy as np
-from wrappers import BCWrapper
+from baselines.common.wrappers import BCWrapper
 
 def collate_fn(batch):
     global_state = rnn_utils.pad_sequence([torch.from_numpy(x[0]) for x in batch], batch_first=True, padding_value=0.0)
@@ -38,13 +38,13 @@ class BCDataset(Dataset):
     def __getitem__(self, idx):
         states, actions = self.get_single_data(self.filed_files[idx])
         weights = self.get_data_weight(states, actions)
-        global_state = np.array([state['global_state'] for state in states])
-        self_state = np.array([state['self_state'] for state in states])
-        ally0_state = np.array([state['ally0_state'] for state in states])
-        ally1_state = np.array([state['ally1_state'] for state in states])
-        enemy0_state = np.array([state['enemy0_state'] for state in states])
-        enemy1_state = np.array([state['enemy1_state'] for state in states])
-        enemy2_state = np.array([state['enemy2_state'] for state in states])
+        global_state = np.array([state[0] for state in states])
+        self_state = np.array([state[1] for state in states])
+        ally0_state = np.array([state[2] for state in states])
+        ally1_state = np.array([state[3] for state in states])
+        enemy0_state = np.array([state[4] for state in states])
+        enemy1_state = np.array([state[5] for state in states])
+        enemy2_state = np.array([state[6] for state in states])
         action = np.array(actions)
         weight = np.array(weights)
         return global_state, self_state, ally0_state, ally1_state, enemy0_state, enemy1_state, enemy2_state, action, weight
@@ -73,7 +73,7 @@ class BCDataset(Dataset):
         '''
         weights = [1. for _ in actions]
         for idx, (state, action) in enumerate(zip(states, actions)):
-            character_id = state['self_state'][0]
+            character_id = state[1][0]
             # noop action
             if action == 0: weights[idx] *= 0.2
             # defend action
@@ -104,7 +104,6 @@ class BCDataset(Dataset):
     def get_total_files(self):
         total_files = []
         summit_level_dict = {}
-
         for folder_name in tqdm(os.listdir(self.data_path), desc='[dataset] get total files: '):
             # set DATA_RELEASE_9 as test set, others as train set
             if 'DATA_RELEASE' in folder_name:
@@ -136,6 +135,7 @@ class BCDataset(Dataset):
         # 指定summit level在【15，50】
         filed_files = []
         for file_path in tqdm(total_files, desc='[dataset] filte data: '):
+            file_path = file_path.replace('\\', '/')
             file_name = file_path.split('/')[-1].split('.')[0].split('_')[1]
             summit_level = summit_level_dict[file_name]
             if summit_level >= 15 and summit_level <= 50 and os.path.getsize(file_path) > 1024:

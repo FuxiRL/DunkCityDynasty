@@ -1,13 +1,14 @@
+import sys,os;sys.path.append(os.getcwd())
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 from torch.utils.tensorboard import SummaryWriter 
-from utils import onehot
+from baselines.common.utils import onehot
 from bc_utils import get_file_names, sample_batch, read_one_file, convert_to_batch
-from model import Model
-from wrappers import BCWrapper
+from baselines.common.model import Model
+from baselines.common.wrappers import BCWrapper
     
 class Policy(nn.Module):
     def __init__(self) -> None:
@@ -56,9 +57,9 @@ if __name__ == '__main__':
     
     human_data_dir = "./human_data"
     TOTAL_DIRS = [
-        "DATA_RELEASE_NEW_HANDLED0",
-        "DATA_RELEASE_NEW_HANDLED1",
-        "DATA_RELEASE_NEW_HANDLED2",
+        "DATA_RELEASE_NEW_HANDLED_0",
+        "DATA_RELEASE_NEW_HANDLED_1",
+        "DATA_RELEASE_NEW_HANDLED_2",
     ]
     file_pointers = []
     for dir_name in TOTAL_DIRS:

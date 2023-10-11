@@ -127,7 +127,7 @@ python ./baselines/torch/train_rl.py
 BC training:
 
 ```sh
-python ./baselines/torch/train_bc.py
+python ./baselines/torch/train_bc_1.py
 ```
 
 ## QA

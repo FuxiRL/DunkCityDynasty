@@ -1,5 +1,4 @@
-import sys,os
-sys.path.append(os.getcwd())
+import sys,os;sys.path.append(os.getcwd())
 import torch
 import torch.nn as nn
 import random

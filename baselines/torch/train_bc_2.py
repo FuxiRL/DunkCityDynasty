@@ -1,11 +1,12 @@
+import sys,os;sys.path.append(os.getcwd())
 import torch
 from torch.utils.data import DataLoader
 from torch.distributions import Categorical
 from torch.utils.tensorboard import SummaryWriter 
-from utils import all_seed
+from baselines.common.utils import all_seed
 from bc_collector import BCDataset, collate_fn
 from bc_utils import download_human_data
-from model import Model
+from baselines.common.model import Model
 
 class Config:
     def __init__(self) -> None:
@@ -16,12 +17,13 @@ class Config:
         self.test_batchsize = 4
         self.dataloader_n_workers = 4
         self.lr = 1e-4
-        self.device = torch.device('cuda')
+        self.device = torch.device('cpu')
+
 def train(cfg):
     # download_human_data(cfg.data_path)
     all_seed(cfg.seed)
     train_dataset = BCDataset(cfg.data_path,is_train=True)
-    train_dataloader = DataLoader(train_dataset, batch_size=cfg.train_batchsize, huffle=True, num_workers=cfg.dataloader_n_workers,collate_fn=collate_fn,)
+    train_dataloader = DataLoader(train_dataset, batch_size=cfg.train_batchsize, shuffle=True, num_workers=cfg.dataloader_n_workers,collate_fn=collate_fn,)
     test_dataset = BCDataset(cfg.data_path,is_train=False)
     model = Model().to(cfg.device)
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.lr)
@@ -40,7 +42,7 @@ def train(cfg):
             action = action.squeeze(0).to(cfg.device)
             weight = weight.squeeze(0).to(cfg.device)
             # Forward
-            logits = model([global_state, self_state, ally0_state, ally1_state, enemy0_state, enemy1_state, enemy2_state])
+            _, logits = model([global_state, self_state, ally0_state, ally1_state, enemy0_state, enemy1_state, enemy2_state])
             m = Categorical(logits=logits)
             loss = -m.log_prob(action) * weight
             loss = loss.mean()
@@ -58,9 +60,8 @@ def train(cfg):
                     with torch.no_grad():
                         test_state = [inner_test_state.to(cfg.device) for inner_test_state in test_state]
                         test_action = test_action.to(cfg.device)
-                        test_pred_action = model(test_state)
-                        test_pred_action = test_pred_action.argmax(-1)
-
+                        _, test_pred_logits = model(test_state)
+                        test_pred_action = test_pred_logits.argmax(-1)
                         test_accuracy.append((test_pred_action == test_action).float().mean().detach().cpu().numpy())
                 test_accuracy = sum(test_accuracy) / len(test_accuracy)
                 step += 1
