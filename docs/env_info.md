@@ -274,35 +274,40 @@ There are two forms of game termination in our environment: one is when one side
 
 In addition, we provide some end values **for each trucation** to support more diverse training, as shown in the table below.
 
-| Index |   Feature Key    |                         Description                          |
-| :---: | :--------------: | :----------------------------------------------------------: |
-|   0   |        id        |                    Character id of player                    |
-|   1   |       win        | Whether player team win or not. Note that both win could get "win=0" when the attacking side times out |
-|   2   |      delta       |             Score delta, could be $0,\pm2,\pm3$              |
-|   3   |     is_home      |           Whether the player belongs to home team            |
-|   4   |  skill_type_cnt  |                Count of different skill used                 |
-|   5   |    skill_var     |    Variance of the number of skills used, cound be $NaN$     |
-|   6   |    my_tot_try    |                  Total shoot try of player                   |
-|   7   |  my_dazhao_cnt   |                Count of ultimate skill casted                |
-|   8   |   my_pass_cnt    |                  Total pass count of player                  |
-|   9   |  my_rebound_cnt  |               Total rebounding count of player               |
-|  10   |  my_screen_cnt   |                 Total screen count of player                 |
-|  11   |   my_block_cnt   |                Total blocking count of player                |
-|  12   |  my_blocked_cnt  |             Total being blocked count of player              |
-|  13   |   my_steal_cnt   |                Total stealing count of player                |
-|  14   |  my_stolen_cnt   |              Total being stolen count of player              |
-|  15   |  my_pickup_cnt   |                Total pick up count of player                 |
-|  16   |     my_score     |              Score of player, counld be $0,2,3$              |
-|  17   |    my_two_try    |                Total 2-pt shoot try of player                |
-|  18   |   my_three_try   |                Total 3-pt shoot try of player                |
-|  19   |    team_score    |                        Score of team                         |
-|  20   |   team_tot_try   |                   Total shoot try of team                    |
-|  21   |   team_two_try   |                 Total 2-pt shoot try of team                 |
-|  22   |  team_three_try  |                 Total 3-pt shoot try of team                 |
-|  23   |  team_block_cnt  |                 Total blocking count of team                 |
-|  24   | team_rebound_cnt |                Total rebounding count of team                |
-|  25   |  team_steal_cnt  |                 Total stealing count of team                 |
-|  26   | team_screen_cnt  |                  Total screen count of team                  |
+|    Feature Key    |                         Description                          |
+| :---------------: | :----------------------------------------------------------: |
+|        id         |                    Character id of player                    |
+|        win        | Whether player team win or not. Note that both win could get "win=0" when the attacking side times out |
+| team_score_panel  |              team score on the score dashboard               |
+| enemy_score_panel |              enemy score on the score dashboard              |
+|     win_panel     | When player team win or not according to the score on dashboard |
+|   is_last_round   |                  Whether is the last round                   |
+|       delta       |             Score delta, could be $0,\pm2,\pm3$              |
+|    delta_panel    |       Score delta according to the score on dashboard        |
+|      is_home      |           Whether the player belongs to home team            |
+|  skill_type_cnt   |                Count of different skill used                 |
+|     skill_var     |    Variance of the number of skills used, cound be $NaN$     |
+|    my_tot_try     |                  Total shoot try of player                   |
+|   my_dazhao_cnt   |                Count of ultimate skill casted                |
+|    my_pass_cnt    |                  Total pass count of player                  |
+|  my_rebound_cnt   |               Total rebounding count of player               |
+|   my_screen_cnt   |                 Total screen count of player                 |
+|   my_block_cnt    |                Total blocking count of player                |
+|  my_blocked_cnt   |             Total being blocked count of player              |
+|   my_steal_cnt    |                Total stealing count of player                |
+|   my_stolen_cnt   |              Total being stolen count of player              |
+|   my_pickup_cnt   |                Total pick up count of player                 |
+|     my_score      |              Score of player, counld be $0,2,3$              |
+|    my_two_try     |                Total 2-pt shoot try of player                |
+|   my_three_try    |                Total 3-pt shoot try of player                |
+|    team_score     |                        Score of team                         |
+|   team_tot_try    |                   Total shoot try of team                    |
+|   team_two_try    |                 Total 2-pt shoot try of team                 |
+|  team_three_try   |                 Total 3-pt shoot try of team                 |
+|  team_block_cnt   |                 Total blocking count of team                 |
+| team_rebound_cnt  |                Total rebounding count of team                |
+|  team_steal_cnt   |                 Total stealing count of team                 |
+|  team_screen_cnt  |                  Total screen count of team                  |
 
 
 

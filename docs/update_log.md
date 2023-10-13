@@ -1,3 +1,10 @@
+Update at $\text{2023-10-13}$:
+
+* [client]: fix bug of the `state event` values of client, please download the latest client.
+
+Update at $\text{2023-10-11}$:
+* [codes]: fix bug of the  `baselines/torch/train_bc_1(2).py`
+
 Update at $\text{2023-09-21}$:
 * [codes]: open source the code of the `baselines/ray/train_rl.py`
   
