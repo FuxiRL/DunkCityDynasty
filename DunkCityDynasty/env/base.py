@@ -29,7 +29,7 @@ class BaseEnv():
         self.game_server_ip = config['game_server_ip']
         self.game_server_port = config['game_server_port']
         self.user_name = config['user_name']
-        self.pid = -1 # game client pid
+        self.pid = None # game client pid
         self.last_states = None # last states
         self.stream_data = {}
         if self.env_setting == 'linux':
