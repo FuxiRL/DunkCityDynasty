@@ -125,7 +125,7 @@ class RLWrapper:
             if state_event_dict.get("ball_clear",None) is not None:
                 state_event_reward -= 0.0016
             if state_event_dict.get("attack_time_out",None) is not None:
-                state_event_reward -= 4
+                state_event_reward -= 0.2
             if state_event_dict.get("got_defended",None) is not None:
                 state_event_reward -=0.2
             if state_event_dict.get("out_of_defend",None) is not None:

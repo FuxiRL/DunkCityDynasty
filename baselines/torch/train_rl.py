@@ -11,9 +11,8 @@ from baselines.common.model import Model
 from baselines.common.wrappers import RLWrapper
 from DunkCityDynasty.env.gym_env import GymEnv
 
-class Policy(nn.Module):
+class Policy:
     def __init__(self) -> None:
-        super().__init__()
         self.memory = Memory()
         self.model = Model().to('cpu')
         self.update_step = 0
@@ -93,10 +92,17 @@ class Policy(nn.Module):
                     if self.update_step % 100 == 0:
                         self.save_model('./output/model', self.update_step)
 
+
 class Exp:
     def __init__(self, **kwargs) -> None:
         for k,v in kwargs.items():
             setattr(self,k,v)
+
+class Member():
+    def __init__(self,id) -> None:
+        self.id = id
+    def get_actions(self, policy, states):
+        action, log_probs = policy.sample_action(states)
 
 class Memory():
     def __init__(self) -> None:
